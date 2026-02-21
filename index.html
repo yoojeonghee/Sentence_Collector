@@ -7,223 +7,207 @@
 
 <link rel="icon" href="data:image/svg+xml,
 <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
-<text y=%22.9em%22 font-size=%2290%22>✎</text>
+<text y=%22.9em%22 font-size=%2290%22>📖</text>
 </svg>">
 
 <style>
 :root{
-  --bg:#f5f5f7;
+  --bg:#ffffff;
   --card:#ffffff;
-  --text:#1d1d1f;
-  --sub:#86868b;
-  --border:#e5e5e7;
-  --accent:#0071e3;
+  --text:#111;
+  --sub:#666;
+  --line:#eaeaea;
+  --accent:#111;
   --ease:cubic-bezier(0.22,1,0.36,1);
 }
 
-body.dark{
-  --bg:#000;
-  --card:#1c1c1e;
-  --text:#f5f5f7;
-  --sub:#98989d;
-  --border:#2c2c2e;
-  --accent:#2997ff;
-}
-
-*{box-sizing:border-box;}
-
 body{
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:background .5s var(--ease), color .5s var(--ease);
+  -webkit-tap-highlight-color:transparent;
 }
 
 .container{
-  max-width:860px;
-  margin:0 auto;
-  padding:0 20px 120px;
+  max-width:760px;
+  margin:auto;
+  padding:32px 20px 80px;
 }
 
-/* HERO (여백 축소) */
-.hero{
+header{
   text-align:center;
-  padding:50px 0 30px; /* 더 줄임 */
-  transition:transform .4s var(--ease), opacity .4s var(--ease);
+  margin:20px 0 30px;
 }
 
-.hero h1{
-  font-size:34px;
-  margin:0 0 8px;
+h1{
+  font-size:28px;
+  font-weight:600;
+  margin:0;
   letter-spacing:-0.5px;
 }
 
-.hero p{
-  font-size:16px;
-  color:var(--sub);
-  margin:0;
-}
-
-/* 추천 */
-.recommend{
-  margin:30px 0 60px;
-  padding:28px;
-  border-radius:22px;
-  background:var(--card);
-  border:1px solid var(--border);
-  text-align:center;
-  cursor:pointer;
-  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
-}
-
-.recommend:hover{
-  transform:translateY(-4px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.08);
-}
-
-.recommend p{
-  font-size:17px;
-  margin:10px 0 0;
-}
-
-/* FORM */
-.form-section{
-  margin-bottom:80px;
-  padding:32px;
-  border-radius:22px;
-  background:var(--card);
-  border:1px solid var(--border);
-  transition:background .5s var(--ease), border-color .5s var(--ease);
-}
-
-.form-group{ margin-bottom:20px; }
-
-label{
+.subtitle{
   font-size:14px;
   color:var(--sub);
-  display:block;
-  margin-bottom:8px;
+  margin-top:6px;
 }
 
-input, textarea{
+input,textarea{
   width:100%;
   padding:14px;
-  font-size:16px;
+  margin-bottom:14px;
+  border:1px solid var(--line);
   border-radius:14px;
-  border:1px solid var(--border);
-  background:transparent;
-  transition:.25s var(--ease);
-}
-
-input:focus, textarea:focus{
-  outline:none;
-  border-color:var(--accent);
-  box-shadow:0 0 0 4px rgba(0,113,227,0.15);
-}
-
-textarea{ min-height:130px; }
-
-/* 버튼 우측 정렬 */
-.button-wrap{
-  display:flex;
-  justify-content:flex-end;
-}
-
-button{
-  padding:12px 20px;
-  border-radius:14px;
-  border:none;
-  background:var(--accent);
-  color:white;
   font-size:15px;
+  background:#fafafa;
+  transition:all .25s var(--ease);
+}
+
+input:focus,textarea:focus{
+  outline:none;
+  border-color:#ccc;
+  background:#fff;
+  transform:scale(1.02);
+}
+
+textarea{ min-height:120px; resize:none; }
+
+.save-btn{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  background:#111;
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  padding:16px 22px;
+  font-size:14px;
   cursor:pointer;
-  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  transition:all .3s var(--ease);
+  z-index:10;
 }
 
-button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 30px rgba(0,113,227,0.3);
+.save-btn:active{
+  transform:scale(.95);
 }
 
-button:active{
-  transform:scale(.96);
-}
-
-/* CARDS */
-.card-container{
-  display:grid;
-  gap:24px;
+.cards{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 }
 
 .card{
-  padding:28px;
-  border-radius:24px;
   background:var(--card);
-  border:1px solid var(--border);
-  cursor:pointer;
+  padding:22px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  position:relative;
+  transition:all .4s var(--ease);
   opacity:0;
   transform:translateY(20px);
-  animation:fadeUp .6s var(--ease) forwards;
-  transition:box-shadow .4s var(--ease);
+  animation:fadeIn .6s var(--ease) forwards;
+}
+
+@keyframes fadeIn{
+  to{ opacity:1; transform:translateY(0); }
 }
 
 .card:hover{
-  box-shadow:0 25px 60px rgba(0,0,0,0.08);
+  box-shadow:0 15px 40px rgba(0,0,0,0.06);
 }
 
-@keyframes fadeUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+.card h3{
+  margin:0 0 6px;
+  font-size:17px;
 }
 
-.card strong{ font-size:19px; }
-.card small{ display:block;margin-top:6px;color:var(--sub); }
+.card small{
+  color:var(--sub);
+  font-size:13px;
+}
 
 .card p{
-  margin-top:18px;
-  font-size:16px;
-  padding-left:24px;
-  position:relative;
+  margin-top:12px;
+  line-height:1.6;
 }
 
-.card p::before{
-  content:"“";
+.card-date{
+  margin-top:14px;
+  font-size:12px;
+  color:#aaa;
+}
+
+.menu-btn{
   position:absolute;
-  left:0;
-  top:-8px;
-  font-size:42px;
-  color:var(--border);
+  top:16px;
+  right:16px;
+  font-size:18px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  opacity:0;
+  transition:.3s;
 }
 
-/* PAGINATION */
+.card:hover .menu-btn{
+  opacity:1;
+}
+
+.action-menu{
+  position:absolute;
+  top:40px;
+  right:16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:6px 0;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  display:none;
+  flex-direction:column;
+  min-width:100px;
+}
+
+.action-menu button{
+  background:none;
+  border:none;
+  padding:10px;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.action-menu button:hover{
+  background:#f5f5f5;
+}
+
 .pagination{
-  margin-top:50px;
-  display:flex;
-  justify-content:center;
-  gap:8px;
+  margin-top:30px;
+  text-align:center;
 }
 
 .pagination button{
-  background:transparent;
-  color:var(--text);
-  border:1px solid var(--border);
+  border:none;
+  background:#f3f3f3;
+  margin:0 4px;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-/* MODAL */
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(12px);
+  background:rgba(0,0,0,0.3);
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   opacity:0;
   pointer-events:none;
-  transition:opacity .4s var(--ease);
+  transition:.3s;
 }
 
 .modal.active{
@@ -232,157 +216,160 @@ button:active{
 }
 
 .modal-content{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
   width:90%;
-  max-width:600px;
-  background:var(--card);
-  padding:40px;
-  border-radius:26px;
-  transform:translateY(30px) scale(.95);
-  transition:transform .4s var(--ease);
+  max-width:400px;
+  transform:scale(.95);
+  transition:.3s;
 }
 
 .modal.active .modal-content{
-  transform:translateY(0) scale(1);
-}
-
-/* 모바일 */
-@media(max-width:768px){
-  .hero{ padding:40px 0 20px; }
-  .hero h1{ font-size:26px; }
+  transform:scale(1);
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
+  <header>
+    <h1>📖 문장수집가</h1>
+    <div class="subtitle">마음에 남은 문장을 기록하세요</div>
+  </header>
 
-  <div class="hero" id="hero">
-    <h1>문장수집가</h1>
-    <p>당신의 마음에 남은 문장을 기록하세요.</p>
-  </div>
+  <input id="title" placeholder="책 제목">
+  <input id="author" placeholder="저자">
+  <textarea id="content" placeholder="기억하고 싶은 문장"></textarea>
 
-  <div class="recommend" onclick="randomQuote()">
-    <strong>오늘의 문장</strong>
-    <p id="randomText">아직 기록된 문장이 없습니다.</p>
-  </div>
-
-  <div class="form-section">
-    <div class="form-group">
-      <label>책 제목</label>
-      <input id="title">
-    </div>
-    <div class="form-group">
-      <label>저자</label>
-      <input id="author">
-    </div>
-    <div class="form-group">
-      <label>기억하고 싶은 문장</label>
-      <textarea id="quote"></textarea>
-    </div>
-
-    <div class="button-wrap">
-      <button onclick="saveRecord()">저장하기</button>
-    </div>
-  </div>
-
-  <div class="card-container" id="cardContainer"></div>
+  <div class="cards" id="cards"></div>
   <div class="pagination" id="pagination"></div>
-
 </div>
 
-<div class="modal" id="modal" onclick="closeModal()">
-  <div class="modal-content" id="modalContent"></div>
+<button class="save-btn" onclick="saveRecord()">저장하기</button>
+
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h3>수정하기</h3>
+    <input id="editTitle">
+    <input id="editAuthor">
+    <textarea id="editContent"></textarea>
+    <button onclick="updateRecord()">수정 완료</button>
+  </div>
 </div>
 
 <script>
 let records = JSON.parse(localStorage.getItem("records")) || [];
+let editId = null;
 let currentPage = 1;
 const perPage = 5;
 
-function saveStorage(){
-  localStorage.setItem("records",JSON.stringify(records));
-}
-
-function getDate(){
-  return new Date().toLocaleDateString("ko-KR");
+function saveLocal(){
+  localStorage.setItem("records", JSON.stringify(records));
 }
 
 function saveRecord(){
-  if(!title.value||!author.value||!quote.value) return alert("모두 입력하세요");
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const content = document.getElementById("content").value;
+  if(!title || !content) return;
 
   records.unshift({
-    title:title.value,
-    author:author.value,
-    quote:quote.value,
-    date:getDate()
+    id:Date.now(),
+    title,author,content,
+    date:new Date().toLocaleDateString()
   });
 
-  saveStorage();
+  saveLocal();
   render();
-  randomQuote();
-  title.value=author.value=quote.value="";
+  document.getElementById("title").value="";
+  document.getElementById("author").value="";
+  document.getElementById("content").value="";
 }
 
 function render(){
-  const totalPages=Math.ceil(records.length/perPage);
-  const start=(currentPage-1)*perPage;
-  const pageItems=records.slice(start,start+perPage);
+  const cards = document.getElementById("cards");
+  cards.innerHTML="";
 
-  cardContainer.innerHTML="";
-  pageItems.forEach((r,index)=>{
-    cardContainer.innerHTML+=`
-      <div class="card" onclick="openModal(${index})">
-        <strong>${r.title}</strong>
-        <small>${r.author} · ${r.date}</small>
-        <p>${r.quote}</p>
+  const start = (currentPage-1)*perPage;
+  const pageItems = records.slice(start,start+perPage);
+
+  pageItems.forEach((r,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.style.animationDelay=`${i*70}ms`;
+
+    card.innerHTML=`
+      <button class="menu-btn" onclick="toggleMenu(${r.id})">⋯</button>
+      <div class="action-menu" id="menu-${r.id}">
+        <button onclick="openEdit(${r.id})">✏️ 수정</button>
+        <button onclick="deleteRecord(${r.id})">🗑 삭제</button>
       </div>
+      <h3>${r.title}</h3>
+      <small>${r.author||""}</small>
+      <p>${r.content}</p>
+      <div class="card-date">${r.date}</div>
     `;
+
+    // 모바일 길게 누르기
+    let pressTimer;
+    card.addEventListener("touchstart",()=>{
+      pressTimer=setTimeout(()=>toggleMenu(r.id),600);
+    });
+    card.addEventListener("touchend",()=>clearTimeout(pressTimer));
+
+    cards.appendChild(card);
   });
 
-  setTimeout(()=>{
-    document.querySelectorAll(".card").forEach((card,i)=>{
-      card.style.animationDelay=`${i*80}ms`;
-    });
-  },10);
+  renderPagination();
+}
 
+function renderPagination(){
+  const totalPages = Math.ceil(records.length/perPage);
+  const pagination=document.getElementById("pagination");
   pagination.innerHTML="";
   for(let i=1;i<=totalPages;i++){
     pagination.innerHTML+=`<button onclick="goPage(${i})">${i}</button>`;
   }
 }
 
-function goPage(p){ currentPage=p; render(); }
-
-function openModal(index){
-  const r = records[index];
-  modalContent.innerHTML=`
-    <strong style="font-size:22px">${r.title}</strong>
-    <small style="display:block;margin:10px 0;color:gray">${r.author} · ${r.date}</small>
-    <p style="font-size:18px;line-height:1.8;margin-top:20px">${r.quote}</p>
-  `;
-  modal.classList.add("active");
+function goPage(p){
+  currentPage=p;
+  render();
 }
 
-function closeModal(){
-  modal.classList.remove("active");
+function toggleMenu(id){
+  document.querySelectorAll(".action-menu").forEach(m=>m.style.display="none");
+  const menu=document.getElementById(`menu-${id}`);
+  if(menu) menu.style.display="flex";
 }
 
-function randomQuote(){
-  if(records.length===0) return;
-  const r = records[Math.floor(Math.random()*records.length)];
-  randomText.innerText = `"${r.quote}" — ${r.author}`;
+function deleteRecord(id){
+  records=records.filter(r=>r.id!==id);
+  saveLocal();
+  render();
 }
 
-/* 부드러운 패럴럭스 */
-window.addEventListener("scroll",()=>{
-  const scroll = window.scrollY;
-  hero.style.transform=`translateY(${scroll*0.12}px)`;
-  hero.style.opacity=1-scroll/500;
-});
+function openEdit(id){
+  const record=records.find(r=>r.id===id);
+  editId=id;
+  document.getElementById("editTitle").value=record.title;
+  document.getElementById("editAuthor").value=record.author;
+  document.getElementById("editContent").value=record.content;
+  document.getElementById("editModal").classList.add("active");
+}
+
+function updateRecord(){
+  const record=records.find(r=>r.id===editId);
+  record.title=document.getElementById("editTitle").value;
+  record.author=document.getElementById("editAuthor").value;
+  record.content=document.getElementById("editContent").value;
+  saveLocal();
+  document.getElementById("editModal").classList.remove("active");
+  render();
+}
 
 render();
-randomQuote();
 </script>
 
 </body>
