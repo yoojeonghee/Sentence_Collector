@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>문장수집가</title>
+
+<!-- 감성 이모지 파비콘 -->
+<link rel="icon" href="data:image/svg+xml,
+<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+<text y=%22.9em%22 font-size=%2290%22>✍🏻</text>
+</svg>">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f8f7f5;
+  --card:#ffffffcc;
+  --text:#1f1f1f;
+  --sub:#8b8b8b;
+  --border:#eceae6;
+  --accent:#9c7c5b;
+  --accent-soft:#efe6dc;
+  --shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+body.dark{
+  --bg:#121212;
+  --card:#1e1e1ecc;
+  --text:#f1f1f1;
+  --sub:#aaaaaa;
+  --border:#2b2b2b;
+  --accent:#c8a98d;
+  --accent-soft:#2a2622;
+  --shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'Pretendard', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s ease;
+  line-height:1.6;
+}
+
+.container{
+  max-width:880px;
+  margin:60px auto;
+  padding:0 20px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:45px;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:600;
+  letter-spacing:-0.5px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo span{
+  font-size:24px;
+  opacity:.8;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+input, textarea, select{
+  padding:11px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--card);
+  backdrop-filter:blur(6px);
+  font-size:14px;
+  color:var(--text);
+  transition:.2s;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+button{
+  padding:10px 15px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--card);
+  cursor:pointer;
+  transition:.2s;
+}
+
+button.primary{
+  background:var(--accent);
+  color:white;
+  border:none;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  opacity:.9;
+}
+
+.form-section{
+  background:var(--card);
+  backdrop-filter:blur(10px);
+  padding:35px;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  margin-bottom:50px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  margin-bottom:20px;
+}
+
+label{
+  font-size:13px;
+  margin-bottom:6px;
+  color:var(--sub);
+}
+
+.card-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:25px;
+}
+
+.card{
+  position:relative;
+  padding:22px;
+  border-radius:22px;
+  background:var(--card);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  transition:.3s ease;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+}
+
+.card strong{
+  font-weight:600;
+}
+
+.card small{
+  color:var(--sub);
+  font-size:12px;
+}
+
+.card p{
+  margin-top:12px;
+  font-size:14px;
+  padding-left:12px;
+  border-left:3px solid var(--accent-soft);
+}
+
+.tag{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:10px;
+  font-size:12px;
+  background:var(--accent-soft);
+  margin-top:8px;
+  margin-right:6px;
+}
+
+.card-actions{
+  position:absolute;
+  top:12px;
+  right:12px;
+  display:none;
+  gap:6px;
+}
+
+.card:hover .card-actions{
+  display:flex;
+}
+
+.pagination{
+  margin-top:45px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
+
+@media(max-width:600px){
+  .header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <span>✍🏻</span>
+      문장수집가
+    </div>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="문장을 찾아보세요">
+      <select id="sortSelect">
+        <option value="latest">최신순</option>
+        <option value="oldest">오래된순</option>
+        <option value="title">제목순</option>
+      </select>
+      <button onclick="toggleDarkMode()">🌙</button>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-group">
+      <label>책 제목</label>
+      <input id="title">
+    </div>
+    <div class="form-group">
+      <label>저자</label>
+      <input id="author">
+    </div>
+    <div class="form-group">
+      <label>태그</label>
+      <input id="tags">
+    </div>
+    <div class="form-group">
+      <label>기억하고 싶은 문장</label>
+      <textarea id="quote"></textarea>
+    </div>
+    <button class="primary" onclick="saveRecord()">문장 보관하기</button>
+  </div>
+
+  <div class="card-container" id="cardContainer"></div>
+  <div class="pagination" id="pagination"></div>
+
+</div>
+
+<script>
+let records = JSON.parse(localStorage.getItem("records")) || [];
+let currentPage = 1;
+const perPage = 5;
+
+function saveStorage(){
+  localStorage.setItem("records",JSON.stringify(records));
+}
+
+function getDate(){
+  return new Date().toLocaleDateString("ko-KR");
+}
+
+function saveRecord(){
+  if(!title.value||!author.value||!quote.value) return alert("모두 입력하세요");
+  const tagArr = tags.value ? tags.value.split(",").map(t=>t.trim()) : [];
+  records.unshift({
+    title:title.value,
+    author:author.value,
+    quote:quote.value,
+    tags:tagArr,
+    date:getDate()
+  });
+  saveStorage();
+  render();
+  title.value=author.value=quote.value=tags.value="";
+}
+
+function render(){
+  const keyword = searchInput.value.toLowerCase();
+  let filtered = records.filter(r=>
+    r.title.toLowerCase().includes(keyword)||
+    r.author.toLowerCase().includes(keyword)||
+    r.quote.toLowerCase().includes(keyword)
+  );
+
+  const totalPages=Math.ceil(filtered.length/perPage);
+  const start=(currentPage-1)*perPage;
+  const pageItems=filtered.slice(start,start+perPage);
+
+  cardContainer.innerHTML="";
+  pageItems.forEach(r=>{
+    cardContainer.innerHTML+=`
+      <div class="card">
+        <strong>${r.title}</strong><br>
+        <small>${r.author} · ${r.date}</small><br>
+        ${r.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
+        <p>${r.quote}</p>
+      </div>
+    `;
+  });
+
+  pagination.innerHTML="";
+  for(let i=1;i<=totalPages;i++){
+    pagination.innerHTML+=`<button onclick="goPage(${i})">${i}</button>`;
+  }
+}
+
+function goPage(p){ currentPage=p; render(); }
+function toggleDarkMode(){ document.body.classList.toggle("dark"); }
+searchInput.oninput=render;
+sortSelect.onchange=render;
+
+render();
+</script>
+
+</body>
+</html>
