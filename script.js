@@ -21,7 +21,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 로그인 버튼을 누를 때마다 계정 선택창 띄우기
+// ✅ [추가] 로그인 버튼을 누를 때마다 계정 선택창 띄우기 설정
 // provider.setCustomParameters({
 //   prompt: 'select_account'
 // });
@@ -39,7 +39,6 @@ const appScreen = document.getElementById("app-screen");
 // 🔐 로그인/아웃 로직
 // =============================
 
-// 구글 로그인 실행
 document.getElementById("google-login-btn").onclick = async () => {
   try {
     await signInWithPopup(auth, provider);
@@ -49,12 +48,10 @@ document.getElementById("google-login-btn").onclick = async () => {
   }
 };
 
-// 로그아웃 실행
 document.getElementById("logoutBtn").onclick = async () => {
   await signOut(auth);
 };
 
-// 인증 상태 감시 (화면 전환 핵심)
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
@@ -95,6 +92,7 @@ async function saveRecord() {
   const content = document.getElementById("content").value.trim();
   if (!title || !content) return alert("제목과 내용을 입력해주세요.");
 
+  // ✅ 데이터 저장 시 날짜는 자동으로 저장되고 있습니다. (date 항목)
   await addDoc(collection(db, "users", currentUser.uid, "records"), {
     title, author, content,
     date: new Date().toLocaleDateString(),
@@ -151,11 +149,15 @@ function render() {
       <small>${group.author || ""}</small>
       <div class="sentences" style="display:none; flex-direction:column; gap:14px; margin-top:18px;">
         ${group.sentences.map(s => `
-          <div class="sentence-item">
-            ${s.content}
-            <div class="sentence-actions">
-              <button onclick="editSentence('${s.firebaseId}')">✏️</button>
-              <button onclick="deleteSentence('${s.firebaseId}')">🗑</button>
+          <div class="sentence-item" style="padding: 16px; background: var(--bg); border-radius: 18px;">
+            <div style="margin-bottom: 12px; line-height: 1.6;">${s.content}</div>
+            
+            <div style="border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; color: var(--sub); opacity: 0.8;">${s.date || ''}</span>
+              <div class="sentence-actions" style="opacity: 1; display: flex; gap: 8px;">
+                <button onclick="editSentence('${s.firebaseId}')" style="padding: 4px 8px; font-size: 12px; background: none; box-shadow: none; color: var(--text);">✏️</button>
+                <button onclick="deleteSentence('${s.firebaseId}')" style="padding: 4px 8px; font-size: 12px; background: none; box-shadow: none; color: var(--text);">🗑</button>
+              </div>
             </div>
           </div>
         `).join("")}
