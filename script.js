@@ -21,10 +21,10 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ✅ [추가] 로그인 버튼을 누를 때마다 계정 선택창 띄우기 설정
-// provider.setCustomParameters({
-//   prompt: 'select_account'
-// });
+// ✅ [수정] 로그인 버튼을 누를 때마다 항상 계정 선택창 띄우기
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 let rawRecords = [];
 let editingId = null;
@@ -92,7 +92,6 @@ async function saveRecord() {
   const content = document.getElementById("content").value.trim();
   if (!title || !content) return alert("제목과 내용을 입력해주세요.");
 
-  // ✅ 데이터 저장 시 날짜는 자동으로 저장되고 있습니다. (date 항목)
   await addDoc(collection(db, "users", currentUser.uid, "records"), {
     title, author, content,
     date: new Date().toLocaleDateString(),
@@ -127,6 +126,21 @@ async function updateEdited() {
   clearInputs();
 }
 
+// ✅ [추가] 클립보드 복사 함수
+window.copyText = (text) => {
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.createElement("div");
+    toast.className = "copy-toast";
+    toast.innerText = "문장이 복사되었습니다 ✨";
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 500);
+    }, 2000);
+  });
+};
+
 // =============================
 // 🎨 화면 렌더링
 // =============================
@@ -153,22 +167,26 @@ function render() {
       </div>
 
       <div class="sentences">
-        ${group.sentences.map(s => `
-          <div class="sentence-item">
-            <div class="sentence-content" style="word-break: break-all;">${s.content}</div>
-            <div class="sentence-footer">
-              <span>${s.date || ''}</span>
-              <div class="sentence-actions">
-                <button onclick="editSentence('${s.firebaseId}')">✏️</button>
-                <button onclick="deleteSentence('${s.firebaseId}')">🗑</button>
+        ${group.sentences.map(s => {
+          const safeContent = s.content.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+          return `
+            <div class="sentence-item" onclick="event.stopPropagation(); copyText('${safeContent}')">
+              <div class="sentence-content" style="word-break: break-all;">${s.content}</div>
+              <div class="sentence-footer">
+                <span>${s.date || ''}</span>
+                <div class="sentence-actions">
+                  <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}')">✏️</button>
+                  <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">🗑</button>
+                </div>
               </div>
             </div>
-          </div>
-        `).join("")}
+          `;
+        }).join("")}
       </div>
     `;
 
     card.addEventListener("click", (e) => {
+      // 버튼 클릭 시에는 이미 stopPropagation이 있어서 작동하지 않지만, 한 번 더 체크
       if (e.target.closest(".sentence-actions")) return;
       
       const list = card.querySelector(".sentences");
