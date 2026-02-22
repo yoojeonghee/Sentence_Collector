@@ -96,6 +96,13 @@ body{
   margin-bottom: 40px;
 }
 
+.hero-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+}
+
 .hero-text h1{
   font-size:32px;
   margin:0;
@@ -113,9 +120,6 @@ body{
   border-radius:14px;
   padding:10px 16px;
   cursor:pointer;
-  position:absolute;
-  top:35px;
-  right:30px;
 }
 
 body.dark .theme-toggle{
