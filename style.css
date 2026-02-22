@@ -126,26 +126,50 @@ body.dark .theme-toggle{
   border: 1px solid #888888;
 }
 
-.form-section{
-  margin-bottom:40px;
+/* --- 입력 섹션 (카드 박스 형태) --- */
+.form-section {
+  background: var(--card);   /* 배경색과 동일한 카드 배경 */
+  padding: 24px;             /* 내부 여백 */
+  border-radius: 28px;       /* 부드러운 곡률 */
+  box-shadow: var(--shadow-soft); /* 은은한 그림자 */
+  margin-bottom: 40px;       /* 아래 카드 리스트와의 간격 */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                  /* 필드 사이 간격을 더 좁게 수정 */
 }
 
-input,textarea{
-  width:100%;
-  padding:16px;
-  border-radius:18px;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--text);
-  margin-bottom:16px;
-  transition:.3s var(--ease);
+input, textarea {
+  width: 100%;
+  padding: 14px 16px;        /* 내부 패딩 미세 조정 */
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--bg);     /* 입력창은 배경색(연한 회색)을 써서 대비를 줌 */
+  color: var(--text-main);
+  transition: all 0.3s var(--ease);
+  font-size: 15px;           /* 폰트 사이즈 살짝 최적화 */
+  outline: none;
 }
 
-textarea{
-  min-height:110px;
+/* 입력창에 마우스를 올리거나 클릭했을 때 */
+input:focus, textarea:focus {
+  border-color: var(--sub);
+  background: var(--card);   /* 포커스 시 배경을 다시 밝게 변경 */
+}
+
+textarea {
+  min-height: 100px;         /* 높이 살짝 조절 */
   resize: none;
+  margin-bottom: 4px;        /* 마지막 요소 간격 맞춤 */
 }
 
+/* 플레이스홀더 색상 조절 */
+input::placeholder, textarea::placeholder {
+  color: var(--sub);
+  opacity: 0.6;
+}
+
+/* --- 카드 리스트 --- */
 .cards{
   display:flex;
   flex-direction:column;
