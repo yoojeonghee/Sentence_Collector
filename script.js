@@ -160,9 +160,15 @@ function render() {
     card.className = "card";
     card.style.animationDelay = `${i * 80}ms`;
 
+    // 문장 개수만큼 점(·) 생성 (최대 5개 정도로 제한하거나 다 보여주거나 선택 가능)
+    // 여기서는 개수만큼 다 보여주도록 설정했습니다.
+    const dots = `<span class="count-dots">${"·".repeat(group.sentences.length)}</span>`;
+
     card.innerHTML = `
       <div class="card-header">
-        <h3 style="transition: color 0.3s;">${group.title}</h3>
+        <div style="display: flex; align-items: center;"> <h3 style="margin: 0;">${group.title}</h3>
+          ${dots}
+        </div>
         <small>${group.author || "저자 미상"}</small>
       </div>
 
@@ -186,19 +192,21 @@ function render() {
     `;
 
     card.addEventListener("click", (e) => {
-      // 버튼 클릭 시에는 이미 stopPropagation이 있어서 작동하지 않지만, 한 번 더 체크
       if (e.target.closest(".sentence-actions")) return;
       
       const list = card.querySelector(".sentences");
       const title = card.querySelector("h3");
+      const dotsEl = card.querySelector(".count-dots");
       const isOpen = list.classList.contains("active");
 
       if (isOpen) {
         list.classList.remove("active");
         title.style.color = "var(--text-main)";
+        if(dotsEl) dotsEl.style.opacity = "1";
       } else {
         list.classList.add("active");
         title.style.color = "var(--text-sub)";
+        if(dotsEl) dotsEl.style.opacity = "0"; // 열리면 점은 살짝 숨겨서 깔끔하게
       }
     });
 

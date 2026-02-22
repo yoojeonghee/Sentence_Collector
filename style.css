@@ -421,3 +421,33 @@ button:hover{
   font-size: 16px;
   cursor: pointer;
 }
+
+/* 문장 개수 도트 스타일 */
+.count-dots {
+  display: inline-flex;    /* flex로 변경하여 정렬 제어 */
+  align-items: center;
+  letter-spacing: 2px;
+  font-size: 14px;
+  color: var(--sub);
+  margin-left: 6px;
+  transition: all 0.3s var(--ease);
+  user-select: none;
+  font-weight: 900;
+  
+  /* 텍스트보다 내려가 보일 때 강제로 위로 올리는 속성 */
+  transform: translateY(-1px); 
+}
+
+/* 다크모드 시인성 유지 */
+body.dark .count-dots {
+  color: var(--text-main);
+  opacity: 0.8;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* 카드 헤더 내부 레이아웃 */
+.card-header > div {
+  display: flex;
+  align-items: center; /* 자식 요소들을 세로 중앙 정렬 */
+  line-height: 1;      /* 라인 높이로 인한 밀림 방지 */
+}
