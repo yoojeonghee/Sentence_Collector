@@ -164,6 +164,16 @@ textarea{
   opacity:0;
   filter:blur(6px);
   animation:cardReveal .7s var(--ease) forwards;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.sentence-item{
+  text-align:justify;
+  line-height:1.7;
+  word-break:break-word;
+  margin-bottom:20px;
 }
 
 .card:hover{
@@ -234,11 +244,9 @@ body.dark .save-btn{
 }
 
 .sentence-actions{
-  position:absolute;
-  top:10px;
-  right:12px;
   display:flex;
   gap:8px;
+  justify-content:flex-end;
   opacity:0;
   transition:.3s var(--ease);
 }
