@@ -3,44 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>문장수집가</title>
-
-  <!-- 🎨 감성 파비콘 -->
+  <title>Sentence Archive</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
 </head>
 <body>
 
-<div class="app">
-
-  <header class="hero">
-    <div class="hero-top">
-      <div class="brand">
-        <img src="favicon.svg" class="logo" />
-        <span class="brand-text">Sentence Archive</span>
-      </div>
-
-      <button id="themeToggle" class="theme-toggle">🌙</button>
+  <div id="login-screen">
+    <div class="login-box">
+      <h1>Sentence Archive</h1>
+      <p>당신의 문장을 영원히 기록하세요.</p>
+      <button id="google-login-btn">Google로 로그인</button>
     </div>
+  </div>
 
-    <p class="hero-sub">
-      기록은 순간을 영원으로 바꾸는 가장 조용한 방식입니다.
-    </p>
-  </header>
+  <div id="app-screen" style="display: none;">
+    <div class="app">
+      <header class="hero">
+        <div class="hero-top">
+          <div class="brand">
+            <img src="favicon.svg" class="logo" />
+            <span class="brand-text">Sentence Archive</span>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="logoutBtn" style="font-size: 12px; padding: 6px 12px; background: #eee; color: #333;">로그아웃</button>
+            <button id="themeToggle" class="theme-toggle">🌙</button>
+          </div>
+        </div>
+        <p class="hero-sub">기록은 순간을 영원으로 바꾸는 가장 조용한 방식입니다.</p>
+      </header>
 
-  <section class="form-section">
-    <input id="title" placeholder="책 제목" />
-    <input id="author" placeholder="저자" />
-    <textarea id="content" placeholder="저장할 문장"></textarea>
-  </section>
+      <section class="form-section">
+        <input id="title" placeholder="책 제목" />
+        <input id="author" placeholder="저자" />
+        <textarea id="content" placeholder="저장할 문장"></textarea>
+      </section>
 
-  <section id="cards" class="cards"></section>
+      <section id="cards" class="cards"></section>
+    </div>
+    <button class="save-btn">저장</button>
+  </div>
 
-</div>
-
-<button class="save-btn">저장</button>
-
-<script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
