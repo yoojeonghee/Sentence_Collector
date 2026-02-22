@@ -21,6 +21,11 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// 로그인 버튼을 누를 때마다 계정 선택창 띄우기
+// provider.setCustomParameters({
+//   prompt: 'select_account'
+// });
+
 let rawRecords = [];
 let editingId = null;
 let currentUser = null;
