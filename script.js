@@ -134,6 +134,7 @@ async function updateEdited() {
 function render() {
   cardsContainer.innerHTML = "";
   const grouped = {};
+  
   rawRecords.forEach(r => {
     const key = r.title + "__" + r.author;
     if (!grouped[key]) grouped[key] = { title: r.title, author: r.author, sentences: [] };
@@ -144,30 +145,45 @@ function render() {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = `${i * 80}ms`;
+
     card.innerHTML = `
-      <h3>${group.title}</h3>
-      <small>${group.author || ""}</small>
-      <div class="sentences" style="display:none; flex-direction:column; gap:14px; margin-top:18px;">
+      <div class="card-header">
+        <h3 style="transition: color 0.3s;">${group.title}</h3>
+        <small>${group.author || "저자 미상"}</small>
+      </div>
+
+      <div class="sentences">
         ${group.sentences.map(s => `
-          <div class="sentence-item" style="padding: 16px; background: var(--bg); border-radius: 18px;">
-            <div style="margin-bottom: 12px; line-height: 1.6;">${s.content}</div>
-            
-            <div style="border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 11px; color: var(--sub); opacity: 0.8;">${s.date || ''}</span>
-              <div class="sentence-actions" style="opacity: 1; display: flex; gap: 8px;">
-                <button onclick="editSentence('${s.firebaseId}')" style="padding: 4px 8px; font-size: 12px; background: none; box-shadow: none; color: var(--text);">✏️</button>
-                <button onclick="deleteSentence('${s.firebaseId}')" style="padding: 4px 8px; font-size: 12px; background: none; box-shadow: none; color: var(--text);">🗑</button>
+          <div class="sentence-item">
+            <div class="sentence-content" style="word-break: break-all;">${s.content}</div>
+            <div class="sentence-footer">
+              <span>${s.date || ''}</span>
+              <div class="sentence-actions">
+                <button onclick="editSentence('${s.firebaseId}')">✏️</button>
+                <button onclick="deleteSentence('${s.firebaseId}')">🗑</button>
               </div>
             </div>
           </div>
         `).join("")}
       </div>
     `;
+
     card.addEventListener("click", (e) => {
       if (e.target.closest(".sentence-actions")) return;
+      
       const list = card.querySelector(".sentences");
-      list.style.display = list.style.display === "flex" ? "none" : "flex";
+      const title = card.querySelector("h3");
+      const isOpen = list.classList.contains("active");
+
+      if (isOpen) {
+        list.classList.remove("active");
+        title.style.color = "var(--text-main)";
+      } else {
+        list.classList.add("active");
+        title.style.color = "var(--text-sub)";
+      }
     });
+
     cardsContainer.appendChild(card);
   });
 }

@@ -228,14 +228,67 @@ input::placeholder, textarea::placeholder {
   gap:14px;
 }
 
-.sentence-item{
-  padding:14px;
-  border-radius:16px;
-  background:var(--bg);
-  font-size:14px;
-  line-height:1.5;
+/* 문장 아이템의 기본 상태 */
+.sentence-item {
+  position: relative;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--bg);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  transition: all 0.3s var(--ease);
+  border: 1px solid transparent;
 }
 
+/* 1. 마우스를 올렸을 때 (호버 효과) */
+.sentence-item:hover {
+  background: var(--card);
+  border-color: var(--line);
+  transform: translateY(-3px) scale(1.01); /* 살짝 떠오르는 효과 */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+body.dark .sentence-item:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* 2. 클릭했을 때 문장들이 스르륵 나타나는 애니메이션 */
+.sentences {
+  margin-top: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sentences.active {
+  display: flex;
+}
+
+/* 문장 하나하나에 순차적인 애니메이션 적용 */
+.sentence-item {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.sentences.active .sentence-item {
+  animation: itemAppear 0.4s var(--ease) forwards;
+}
+
+/* 순차적 등장을 위한 딜레이 설정 */
+.sentences.active .sentence-item:nth-child(1) { animation-delay: 0.1s; }
+.sentences.active .sentence-item:nth-child(2) { animation-delay: 0.2s; }
+.sentences.active .sentence-item:nth-child(3) { animation-delay: 0.3s; }
+.sentences.active .sentence-item:nth-child(n+4) { animation-delay: 0.4s; }
+
+@keyframes itemAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 저장 버튼 */
 .save-btn{
   position:fixed;
   right:40px;
@@ -254,6 +307,45 @@ input::placeholder, textarea::placeholder {
 body.dark .save-btn{
   background:#f5f5f5;
   color:#111;
+}
+
+/* 문장 하단 영역 (날짜 + 버튼) */
+.sentence-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;         /* 문장 본문과의 간격 */
+  padding-top: 12px;        /* 선과 텍스트 사이의 여백 */
+  border-top: 1px solid var(--line); /* 다시 추가된 구분선 */
+  font-size: 11px;
+  color: var(--sub);
+}
+
+/* 다크 모드에서는 선이 너무 튀지 않게 투명도 조절 */
+body.dark .sentence-footer {
+  border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 버튼들 사이 간격 추가 */
+.sentence-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.sentence-actions button {
+  padding: 4px 8px;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-main);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.sentence-actions button:hover {
+  opacity: 1;
+  background: var(--bg);
 }
 
 /* 문장 아이템 내부 액션 */
