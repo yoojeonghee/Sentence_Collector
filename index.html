@@ -1,376 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>문장수집가</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문장수집가</title>
 
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
-<text y=%22.9em%22 font-size=%2290%22>📖</text>
-</svg>">
+  <!-- 🎨 감성 파비콘 -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-<style>
-:root{
-  --bg:#ffffff;
-  --card:#ffffff;
-  --text:#111;
-  --sub:#666;
-  --line:#eaeaea;
-  --accent:#111;
-  --ease:cubic-bezier(0.22,1,0.36,1);
-}
-
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  -webkit-tap-highlight-color:transparent;
-}
-
-.container{
-  max-width:760px;
-  margin:auto;
-  padding:32px 20px 80px;
-}
-
-header{
-  text-align:center;
-  margin:20px 0 30px;
-}
-
-h1{
-  font-size:28px;
-  font-weight:600;
-  margin:0;
-  letter-spacing:-0.5px;
-}
-
-.subtitle{
-  font-size:14px;
-  color:var(--sub);
-  margin-top:6px;
-}
-
-input,textarea{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  font-size:15px;
-  background:#fafafa;
-  transition:all .25s var(--ease);
-}
-
-input:focus,textarea:focus{
-  outline:none;
-  border-color:#ccc;
-  background:#fff;
-  transform:scale(1.02);
-}
-
-textarea{ min-height:120px; resize:none; }
-
-.save-btn{
-  position:fixed;
-  right:24px;
-  bottom:24px;
-  background:#111;
-  color:#fff;
-  border:none;
-  border-radius:50px;
-  padding:16px 22px;
-  font-size:14px;
-  cursor:pointer;
-  box-shadow:0 10px 30px rgba(0,0,0,0.15);
-  transition:all .3s var(--ease);
-  z-index:10;
-}
-
-.save-btn:active{
-  transform:scale(.95);
-}
-
-.cards{
-  margin-top:30px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
-.card{
-  background:var(--card);
-  padding:22px;
-  border-radius:20px;
-  border:1px solid var(--line);
-  position:relative;
-  transition:all .4s var(--ease);
-  opacity:0;
-  transform:translateY(20px);
-  animation:fadeIn .6s var(--ease) forwards;
-}
-
-@keyframes fadeIn{
-  to{ opacity:1; transform:translateY(0); }
-}
-
-.card:hover{
-  box-shadow:0 15px 40px rgba(0,0,0,0.06);
-}
-
-.card h3{
-  margin:0 0 6px;
-  font-size:17px;
-}
-
-.card small{
-  color:var(--sub);
-  font-size:13px;
-}
-
-.card p{
-  margin-top:12px;
-  line-height:1.6;
-}
-
-.card-date{
-  margin-top:14px;
-  font-size:12px;
-  color:#aaa;
-}
-
-.menu-btn{
-  position:absolute;
-  top:16px;
-  right:16px;
-  font-size:18px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  opacity:0;
-  transition:.3s;
-}
-
-.card:hover .menu-btn{
-  opacity:1;
-}
-
-.action-menu{
-  position:absolute;
-  top:40px;
-  right:16px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:6px 0;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  display:none;
-  flex-direction:column;
-  min-width:100px;
-}
-
-.action-menu button{
-  background:none;
-  border:none;
-  padding:10px;
-  text-align:left;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.action-menu button:hover{
-  background:#f5f5f5;
-}
-
-.pagination{
-  margin-top:30px;
-  text-align:center;
-}
-
-.pagination button{
-  border:none;
-  background:#f3f3f3;
-  margin:0 4px;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.3);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-}
-
-.modal.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.modal-content{
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  width:90%;
-  max-width:400px;
-  transform:scale(.95);
-  transition:.3s;
-}
-
-.modal.active .modal-content{
-  transform:scale(1);
-}
-</style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <h1>📖 문장수집가</h1>
-    <div class="subtitle">마음에 남은 문장을 기록하세요</div>
+<div class="app">
+
+  <header class="hero">
+    <div class="brand">
+      <img src="favicon.svg" class="logo" />
+      <span class="brand-text">Sentence Archive</span>
+    </div>
+    <p class="hero-sub">
+    기록은 순간을 영원으로 바꾸는 가장 조용한 방식입니다.
+    </p>
+    <button id="themeToggle" class="theme-toggle">🌙</button>
   </header>
 
-  <input id="title" placeholder="책 제목">
-  <input id="author" placeholder="저자">
-  <textarea id="content" placeholder="기억하고 싶은 문장"></textarea>
+  <section class="form-section">
+    <input id="title" placeholder="책 제목" />
+    <input id="author" placeholder="저자" />
+    <textarea id="content" placeholder="저장할 문장"></textarea>
+  </section>
 
-  <div class="cards" id="cards"></div>
-  <div class="pagination" id="pagination"></div>
+  <section id="cards" class="cards"></section>
+
 </div>
 
-<button class="save-btn" onclick="saveRecord()">저장하기</button>
+<button class="save-btn">저장</button>
 
-<div class="modal" id="editModal">
-  <div class="modal-content">
-    <h3>수정하기</h3>
-    <input id="editTitle">
-    <input id="editAuthor">
-    <textarea id="editContent"></textarea>
-    <button onclick="updateRecord()">수정 완료</button>
-  </div>
-</div>
-
-<script>
-let records = JSON.parse(localStorage.getItem("records")) || [];
-let editId = null;
-let currentPage = 1;
-const perPage = 5;
-
-function saveLocal(){
-  localStorage.setItem("records", JSON.stringify(records));
-}
-
-function saveRecord(){
-  const title = document.getElementById("title").value;
-  const author = document.getElementById("author").value;
-  const content = document.getElementById("content").value;
-  if(!title || !content) return;
-
-  records.unshift({
-    id:Date.now(),
-    title,author,content,
-    date:new Date().toLocaleDateString()
-  });
-
-  saveLocal();
-  render();
-  document.getElementById("title").value="";
-  document.getElementById("author").value="";
-  document.getElementById("content").value="";
-}
-
-function render(){
-  const cards = document.getElementById("cards");
-  cards.innerHTML="";
-
-  const start = (currentPage-1)*perPage;
-  const pageItems = records.slice(start,start+perPage);
-
-  pageItems.forEach((r,i)=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.style.animationDelay=`${i*70}ms`;
-
-    card.innerHTML=`
-      <button class="menu-btn" onclick="toggleMenu(${r.id})">⋯</button>
-      <div class="action-menu" id="menu-${r.id}">
-        <button onclick="openEdit(${r.id})">✏️ 수정</button>
-        <button onclick="deleteRecord(${r.id})">🗑 삭제</button>
-      </div>
-      <h3>${r.title}</h3>
-      <small>${r.author||""}</small>
-      <p>${r.content}</p>
-      <div class="card-date">${r.date}</div>
-    `;
-
-    // 모바일 길게 누르기
-    let pressTimer;
-    card.addEventListener("touchstart",()=>{
-      pressTimer=setTimeout(()=>toggleMenu(r.id),600);
-    });
-    card.addEventListener("touchend",()=>clearTimeout(pressTimer));
-
-    cards.appendChild(card);
-  });
-
-  renderPagination();
-}
-
-function renderPagination(){
-  const totalPages = Math.ceil(records.length/perPage);
-  const pagination=document.getElementById("pagination");
-  pagination.innerHTML="";
-  for(let i=1;i<=totalPages;i++){
-    pagination.innerHTML+=`<button onclick="goPage(${i})">${i}</button>`;
-  }
-}
-
-function goPage(p){
-  currentPage=p;
-  render();
-}
-
-function toggleMenu(id){
-  document.querySelectorAll(".action-menu").forEach(m=>m.style.display="none");
-  const menu=document.getElementById(`menu-${id}`);
-  if(menu) menu.style.display="flex";
-}
-
-function deleteRecord(id){
-  records=records.filter(r=>r.id!==id);
-  saveLocal();
-  render();
-}
-
-function openEdit(id){
-  const record=records.find(r=>r.id===id);
-  editId=id;
-  document.getElementById("editTitle").value=record.title;
-  document.getElementById("editAuthor").value=record.author;
-  document.getElementById("editContent").value=record.content;
-  document.getElementById("editModal").classList.add("active");
-}
-
-function updateRecord(){
-  const record=records.find(r=>r.id===editId);
-  record.title=document.getElementById("editTitle").value;
-  record.author=document.getElementById("editAuthor").value;
-  record.content=document.getElementById("editContent").value;
-  saveLocal();
-  document.getElementById("editModal").classList.remove("active");
-  render();
-}
-
-render();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
