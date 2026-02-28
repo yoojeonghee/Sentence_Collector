@@ -424,6 +424,10 @@ body.light .copy-toast{
 .today-count {
   margin-top: 18px;
   color: var(--text-sub);
-  text-align: left;
+  text-align: center;
   font-size: 14px;
+}
+
+#app-screen .today-count.app-today{
+  text-align: left;
 }
