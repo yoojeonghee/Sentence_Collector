@@ -4,274 +4,237 @@
   box-sizing: border-box;
 }
 
-:root{
-  --text:#111;
-  --sub:#888;
-  --line:#ececec;
-  --shadow:0 20px 50px rgba(0,0,0,0.08);
-  --ease:cubic-bezier(0.22,1,0.36,1);
+/* =========================================
+   🌑 기본 상태: 다크 모드 (Default)
+   ========================================= */
+:root {
+  --bg: #0b0b0d;
+  --card: #1c1c1e;
+  --text-main: #f5f5f7;
+  --text-sub: #a1a1a6;
+  --line: #2b2e34;
+  --soft-card: #2c2c2e;
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.5);
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sub: #aaa; /* 흐린 텍스트용 */
+}
+
+/* =========================================
+   ☀️ 전환 상태: 라이트 모드 (body.light)
+   ========================================= */
+body.light {
   --bg: #f5f5f7;
   --card: #ffffff;
-  --soft-card: #f2f2f4;
   --text-main: #1c1c1e;
   --text-sub: #6e6e73;
-  --shadow-soft: 0 8px 24px rgba(0,0,0,0.06);
+  --line: #ececec;
+  --soft-card: #f2f2f4;
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  --sub: #888;
 }
 
 body {
-  background: #0b0b0d !important;
-}
-
-#login-screen.dark-login {
-  background: #0b0b0d !important;
-}
-
-body.dark{
-  --bg: #000000;
-  --card: #1c1c1e;
-  --text:#f5f5f5;
-  --sub:#aaa;
-  --line:#2b2e34;
-  --shadow:0 20px 50px rgba(0,0,0,0.5);
-  --soft-card: #2c2c2e;
-  --text-main: #f5f5f7;
-  --text-sub: #a1a1a6;
-  --shadow-soft: 0 8px 24px rgba(0,0,0,0.5);
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  cursor:pointer;
-}
-
-.logo{
-  width:42px;
-  height:42px;
-  object-fit:contain;
-  transition: transform .25s var(--ease), opacity .25s var(--ease);
-}
-
-.brand:hover .logo{
-  transform: scale(1.08);
-  opacity:0.8;
-}
-
-.brand-text{
-  font-size:14px;
-  font-weight:500;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  opacity:0.6;
-  transition: opacity .25s var(--ease);
-}
-
-.brand:hover .brand-text{
-  opacity:1;
-}
-
-body.dark .logo{
-  color:#f5f5f5;
-}
-
-body.dark .brand-text{
-  color:#f5f5f5;
-}
-
-.hero-sub{
-  margin-top:12px;
-  font-size:15px;
-  color:#666;
-  line-height:1.6;
-  color: var(--text-sub);
-  font-weight: 400;
-}
-
-body.dark .hero-sub{
-  color:#aaa;
-}
-
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
-  transition:.4s var(--ease);
-  background: var(--bg);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+  background: var(--bg) !important;
   color: var(--text-main);
 }
 
-.app{
-  max-width:720px;
-  margin:auto;
-  padding:60px 28px 140px;
+/* --- 로그인 화면 --- */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  padding: 24px;
 }
 
-.hero{
-  display:flex;
-  flex-direction:column;   /* ✅ 세로 정렬 */
-  align-items:flex-start;  /* 왼쪽 정렬 유지 */
-  gap:8px;
+.dark-login {
   position: relative;
+  overflow: hidden;
+}
+
+.dark-login .login-box {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  gap: 18px;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: #fff;
+}
+
+body.light .login-title {
+  color: var(--text-main);
+}
+
+.dark-login .login-sub {
+  color: var(--text-sub);
+  font-size: 15px;
+  margin-bottom: 40px;
+}
+
+/* 로그인 로고 스타일 */
+.login-logo {
+  width: 96px;         
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: invert(1) brightness(1.2);
+  transition: none;
+}
+
+/* 라이트 모드일 때 로고가 너무 밝으면 조절 (필요 시) */
+body.light .login-logo {
+  filter: none;
+}
+
+/* --- 상단 로고 및 히어로 --- */
+.app {
+  max-width: 720px;
+  margin: auto;
+  padding: 60px 28px 140px;
+}
+
+.hero {
   background: var(--card);
   border-radius: 28px;
   padding: 32px;
   box-shadow: var(--shadow-soft);
   margin-bottom: 40px;
-}
-
-.hero-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  width:100%;
-}
-
-.hero-text h1{
-  font-size:32px;
-  margin:0;
-  font-weight:600;
-}
-
-.hero-text p{
-  margin-top:8px;
-  color:var(--sub);
-}
-
-.theme-toggle{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:10px 16px;
-  cursor:pointer;
-}
-
-body.dark .theme-toggle{
-  border: 1px solid #888888;
-}
-
-/* --- 입력 섹션 (카드 박스 형태) --- */
-.form-section {
-  background: var(--card);   /* 배경색과 동일한 카드 배경 */
-  padding: 24px;             /* 내부 여백 */
-  border-radius: 28px;       /* 부드러운 곡률 */
-  box-shadow: var(--shadow-soft); /* 은은한 그림자 */
-  margin-bottom: 40px;       /* 아래 카드 리스트와의 간격 */
-  
   display: flex;
   flex-direction: column;
-  gap: 8px;                  /* 필드 사이 간격을 더 좁게 수정 */
+  gap: 8px;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  transition: transform 0.25s var(--ease);
+  filter: invert(1) brightness(1.2); 
+}
+
+body.light .logo{
+  filter: none; 
+}
+
+.brand-text {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.hero-sub {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* --- 테마 토글 버튼 --- */
+.theme-toggle {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+/* --- 입력 섹션 --- */
+.form-section {
+  background: var(--card);
+  padding: 24px;
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 input, textarea {
   width: 100%;
-  padding: 14px 16px;        /* 내부 패딩 미세 조정 */
+  padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: var(--bg);     /* 입력창은 배경색(연한 회색)을 써서 대비를 줌 */
+  background: var(--bg);
   color: var(--text-main);
-  transition: all 0.3s var(--ease);
-  font-size: 15px;           /* 폰트 사이즈 살짝 최적화 */
   outline: none;
-}
-
-/* 입력창에 마우스를 올리거나 클릭했을 때 */
-input:focus, textarea:focus {
-  border-color: var(--sub);
-  background: var(--card);   /* 포커스 시 배경을 다시 밝게 변경 */
-}
-
-textarea {
-  min-height: 100px;         /* 높이 살짝 조절 */
+  font-size: 15px;
   resize: none;
-  margin-bottom: 4px;        /* 마지막 요소 간격 맞춤 */
-}
-
-/* 플레이스홀더 색상 조절 */
-input::placeholder, textarea::placeholder {
-  color: var(--sub);
-  opacity: 0.6;
 }
 
 /* --- 카드 리스트 --- */
-.cards{
-  display:flex;
-  flex-direction:column;
-  gap:28px;
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.card{
-  background:var(--card);
-  border-radius:24px;
-  padding:24px;
+.card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 24px;
   box-shadow: var(--shadow-soft);
-  border: none;
-  transition: all 0.2s ease;
-  cursor:pointer;
-  transform:translateY(30px) scale(.98);
-  opacity:0;
-  filter:blur(6px);
-  animation:cardReveal .7s var(--ease) forwards;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  animation: cardReveal 0.7s var(--ease) forwards;
+  opacity: 0;
 }
 
-.card:hover{
+.card:hover {
   transform: translateY(-4px);
 }
 
-@keyframes cardReveal{
-  to{
-    transform:translateY(0) scale(1);
-    opacity:1;
-    filter:blur(0);
-  }
+@keyframes cardReveal {
+  from { transform: translateY(30px); opacity: 0; filter: blur(6px); }
+  to { transform: translateY(0); opacity: 1; filter: blur(0); }
 }
 
-.card h3{
-  margin:0;
-  font-size:20px;
+.card h3 {
+  margin: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
 }
 
-.card small{
-  color:var(--sub);
+.card small {
+  color: var(--text-sub);
 }
 
-.sentences{
-  margin-top:18px;
-  display:none;
-  flex-direction:column;
-  gap:14px;
-}
-
-/* 문장 아이템의 기본 상태 */
-.sentence-item {
-  position: relative;
-  padding: 15px 20px;
-  border-radius: 18px;
-  text-align:justify;
-  word-break:break-word;
-  margin-bottom:20px;
-  background: var(--bg);
-  font-size: 15px;
-  line-height: 1.7;
-  transition: all 0.3s var(--ease);
-  border: 1px solid transparent;
-}
-
-/* 1. 마우스를 올렸을 때 (호버 효과) */
-.sentence-item:hover {
-  background: var(--card);
-  border-color: var(--line);
-  transform: translateY(-3px) scale(1.01); /* 살짝 떠오르는 효과 */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-body.dark .sentence-item:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-/* 2. 클릭했을 때 문장들이 스르륵 나타나는 애니메이션 */
+/* --- 문장 아이템 --- */
 .sentences {
   margin-top: 18px;
   display: none;
@@ -283,8 +246,11 @@ body.dark .sentence-item:hover {
   display: flex;
 }
 
-/* 문장 하나하나에 순차적인 애니메이션 적용 */
 .sentence-item {
+  background: var(--bg);
+  padding: 18px 20px;
+  border-radius: 18px;
+  transition: all 0.3s var(--ease);
   opacity: 0;
   transform: translateY(10px);
 }
@@ -293,32 +259,130 @@ body.dark .sentence-item:hover {
   animation: itemAppear 0.4s var(--ease) forwards;
 }
 
-/* 순차적 등장을 위한 딜레이 설정 */
-.sentences.active .sentence-item:nth-child(1) { animation-delay: 0.1s; }
-.sentences.active .sentence-item:nth-child(2) { animation-delay: 0.2s; }
-.sentences.active .sentence-item:nth-child(3) { animation-delay: 0.3s; }
-.sentences.active .sentence-item:nth-child(n+4) { animation-delay: 0.4s; }
-
 @keyframes itemAppear {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 복사 알림 토스트 스타일 */
+.sentence-item:hover {
+  background: var(--soft-card);
+  transform: translateY(-3px);
+}
+
+/* --- 문장 하단 액션 --- */
+.sentence-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.sentence-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+}
+
+.sentence-item:hover .sentence-actions {
+  opacity: 1;
+}
+
+.sentence-actions button {
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 12px;
+  padding: 4px 8px;
+  box-shadow: none;
+}
+
+.sentence-actions button:hover {
+  color: var(--text-main);
+  background: var(--line);
+}
+
+/* --- 버튼 스타일 공통 --- */
+button {
+  background: var(--text-main);
+  color: var(--bg);
+  border: none;
+  border-radius: 18px;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+#google-login-btn {
+  padding: 16px 32px;      /* 버튼 크기 조정 */
+  font-size: 15px;         /* 글자 크기 키움 (기존보다 크게) */
+  font-weight: 500;
+  border-radius: 40px;
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  min-width: 240px;
+  transition: all 0.35s var(--ease); /* 애니메이션 속도 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.light #google-login-btn {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+#google-login-btn:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-3px); /* 위로 5px 이동 */
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+}
+
+.save-btn {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  padding: 18px 28px;
+  border-radius: 50px;
+  z-index: 100;
+}
+
+/* --- 문장 개수 점 스타일 --- */
+.count-dots {
+  display: inline-flex;
+  align-items: center;
+  font-size: 18px;
+  color: var(--text-sub);
+  margin-left: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  transform: translateY(-2px); /* 기준선 보정 */
+  line-height: 1;
+}
+
+/* --- 토스트 알림 --- */
 .copy-toast {
   position: fixed;
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
-  color: white;
+  background: rgba(255,255,255,1);
+  color: #000;
   padding: 10px 20px;
   border-radius: 50px;
   font-size: 13px;
   z-index: 1000;
   animation: fadeInOut 2s ease forwards;
+}
+
+body.light .copy-toast{
+  background: rgba(0,0,0,0.8);
+  color: white;
 }
 
 @keyframes fadeInOut {
@@ -328,330 +392,10 @@ body.dark .sentence-item:hover {
   100% { opacity: 0; transform: translate(-50%, -10px); }
 }
 
-/* 저장 버튼 */
-.save-btn{
-  position:fixed;
-  right:40px;
-  bottom:40px;
-  border:none;
-  border-radius:50px;
-  padding:18px 28px;
-  font-size:15px;
-  cursor:pointer;
-  background:#111;
-  color:#fff;
-  box-shadow:var(--shadow);
-  transition:.3s var(--ease);
-}
-
-body.dark .save-btn{
-  background:#f5f5f5;
-  color:#111;
-}
-
-/* 문장 하단 영역 (날짜 + 버튼) */
-.sentence-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;         /* 문장 본문과의 간격 */
-  padding-top: 12px;        /* 선과 텍스트 사이의 여백 */
-  border-top: 1px solid var(--line); /* 다시 추가된 구분선 */
-  font-size: 11px;
-  color: var(--sub);
-}
-
-/* 다크 모드에서는 선이 너무 튀지 않게 투명도 조절 */
-body.dark .sentence-footer {
-  border-top-color: rgba(255, 255, 255, 0.05);
-}
-
-/* 문장 아이템 내부 액션 */
-.sentence-actions{
-  display:flex;
-  gap:8px;
-  justify-content:flex-end;
-  opacity:0;
-  transition:.3s var(--ease);
-}
-
-.sentence-item:hover .sentence-actions{
-  opacity:1;
-}
-
-.sentence-actions button{
-  border:none;
-  cursor:pointer;
-  border-radius:8px;
-  padding: 4px 8px;
-  background: transparent;
-  box-shadow: none;
-  font-size: 12px;
-  color: var(--text-main);
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.sentence-actions button:hover {
-  opacity: 1;
-  background: var(--bg);
-}
-
-button{
-  background: #1c1c1e;
-  color: white;
-  border: none;
-  border-radius: 18px;
-  padding: 10px 18px;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-}
-
-button:hover{
-  transform: translateY(-2px);
-}
-
-@media (max-width: 600px){
-  .hero{
-    padding:20px;
-  }
-
-  .brand-text{
-    font-size:18px;
-  }
-
-  .theme-toggle{
-    font-size:14px;
-    padding:8px 12px;
-  }
-}
-
-#login-screen {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--bg);
-  padding: 24px;
-}
-
-.login-box {
-  text-align: center;
-  background: var(--card);
-  padding: 60px 48px;
-  border-radius: 32px;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  max-width: 420px;
-  width: 100%;
-  animation: loginFade 0.8s var(--ease);
-}
-
-@keyframes loginFade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 로그인 로고 */
-.login-logo{
-  width:96px;
-  height:96px;
-  margin-bottom:10px;
-}
-
-.login-box h1{
-  margin:0;
-  letter-spacing:-0.5px;
-}
-
-.login-sub{
-  margin:4px 0 10px;
-}
-
-/* 로그인 버튼 */
-#google-login-btn{
-  padding:14px 22px;
-  font-size:15px;
-  border-radius:20px;
-  background:#111;
-  color:#fff;
-  cursor:pointer;
-  width:auto;                /* 100% 제거 */
-  min-width:220px;           /* 너무 작아지지 않게 */
-  align-self:center;         /* flex 안에서 중앙 정렬 */
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  transition: all .45s cubic-bezier(0.22,1,0.36,1);
-}
-
-#google-login-btn:hover{
-  background:#000;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.16);
-  transform: translateY(-1px);
-}
-
-#google-login-btn:active{
-  transform: translateY(0);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-}
-
-body.dark #google-login-btn{
-  background:#f5f5f5;
-  color:#111;
-}
-
-body.dark #google-login-btn:hover{
-  background:#ffffff;
-}
-
-/* 문장 개수 도트 스타일 */
-.count-dots {
-  display: inline-flex;    /* flex로 변경하여 정렬 제어 */
-  align-items: center;     /* 세로 중앙 정렬 */
-  font-size: 18px;         /* 점 크기 */
-  color: var(--sub);
-  margin-left: 8px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  
-  /* 💡 핵심: 텍스트보다 아래로 치우쳐 보일 때 위로 살짝 올림 */
-  transform: translateY(-2px); 
-  line-height: 1;          /* 라인 높이 간섭 제거 */
-}
-
-/* 다크모드 시인성 유지 */
-body.dark .count-dots {
-  color: var(--text-main);
-  opacity: 0.8;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-}
-
-/* 카드 헤더 내부 레이아웃 */
-.card-header > div {
-  display: flex;
-  align-items: center; /* 자식 요소들을 세로 중앙 정렬 */
-  line-height: 1;      /* 라인 높이로 인한 밀림 방지 */
-}
-
-/* ========================= */
-/* 🔥 DARK HIP LOGIN DESIGN  */
-/* ========================= */
-
-.dark-login{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#0b0b0d;
-  position:relative;
-  overflow:hidden;
-}
-
-/* 로그인 박스는 카드 제거 */
-.dark-login .login-box{
-  background:transparent;
-  box-shadow:none;
-  padding:0;
-  gap:18px;
-  z-index:2;
-}
-
-.login-title{
-  font-size:42px;
-  font-weight:600;
-  letter-spacing:-0.5px;
-  margin:0;
-  color:#fff;
-}
-
-.dark-login .login-sub{
-  color:#aaa;
-  font-size:15px;
-  margin-bottom:40px;
-}
-
-/* 버튼 미니멀화 */
-.dark-login #google-login-btn{
-  background:transparent;
-  border:1px solid #fff;
-  color:#fff;
-  border-radius:40px;
-  padding:14px 36px;
-  transition:all .35s cubic-bezier(0.22,1,0.36,1);
-}
-
-.dark-login #google-login-btn:hover{
-  background:#fff;
-  color:#000;
-  transform:translateY(-3px);
-  box-shadow:0 10px 30px rgba(255,255,255,0.15);
-}
-
-.dark-login .login-logo {
-  width: 90px;
-  height: 90px;
-  filter: invert(1) brightness(1.2);
-  opacity: 0.9;
-}
-
-/* 모바일 대응 */
-@media (max-width:600px){
-  .login-title{
-    font-size:32px;
-  }
-  .login-quote{
-    font-size:16px;
-  }
-}
-
-.today-count{
+/* --- 애니메이션 효과 --- */
+.today-count {
   margin-top: 18px;
+  color: var(--text-sub);
+  text-align: left;
   font-size: 14px;
-  color: rgba(255,255,255,0.45);
-  text-align: center;
-  line-height: 1.6;
-  letter-spacing: 0.3px;
-}
-
-.today-count span{
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;             
-  line-height: 1.6;               
-  margin-top: 24px;                
-  font-weight: 300;                 
-  letter-spacing: -0.02em;         
-}
-
-/* 🎉 숫자 살짝 확대 */
-.celebrate {
-  animation: pop 0.4s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
-}
-
-/* ✨ 반짝임 효과 */
-.sparkle {
-  display: inline-block;
-  margin-left: 6px;
-  opacity: 0;
-  animation: sparkleFade 1s ease forwards;
-}
-
-@keyframes sparkleFade {
-  0% { opacity: 0; transform: translateY(5px); }
-  40% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-5px); }
 }

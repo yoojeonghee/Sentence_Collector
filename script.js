@@ -412,7 +412,10 @@ document.querySelector(".save-btn").addEventListener("click", () => {
 });
 
 document.getElementById("themeToggle").onclick = () => {
-  document.body.classList.toggle("dark");
+  document.body.classList.toggle("light");
+  
+  const isLight = document.body.classList.contains("light");
+  document.getElementById("themeToggle").innerText = isLight ? "🌙" : "☀️";
 };
 
 // =============================
