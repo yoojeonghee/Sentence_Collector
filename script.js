@@ -251,6 +251,47 @@ async function saveRecord() {
   clearInputs();
 }
 
+// ... 기존 코드 (saveRecord 함수 등) ...
+
+// =============================
+// 📝 수정 모드 진입 (여기에 추가!)
+// =============================
+window.editSentence = function(id, title, author, content) {
+  document.getElementById("title").value = title;
+  document.getElementById("author").value = author;
+  document.getElementById("content").value = content;
+
+  editingId = id; // 수정 중인 문서의 ID 저장
+
+  // 화면 상단 입력창으로 부드럽게 이동
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const saveBtn = document.querySelector(".save-btn");
+  if (saveBtn) saveBtn.innerText = "수정 완료";
+  
+  document.getElementById("title").focus();
+};
+
+// =============================
+// ✍ 저장 / 수정 (기존에 있던 위치)
+// =============================
+async function saveRecord() {
+  // ... 기존 코드 ...
+}
+
+async function updateEdited() {
+  // ... 기존 코드 ...
+  
+  // 수정 완료 후 버튼 텍스트 복구 (이 줄을 추가해주면 좋아요)
+  const saveBtn = document.querySelector(".save-btn");
+  if (saveBtn) saveBtn.innerText = "저장";
+  
+  editingId = null;
+  clearInputs();
+}
+
+// ... 나머지 코드 ...
+
 async function updateEdited() {
   await updateDoc(
     doc(db, "users", currentUser.uid, "records", editingId),
@@ -280,20 +321,76 @@ window.deleteSentence = async function(firebaseId) {
 // =============================
 // 🎨 렌더링
 // =============================
-
+// =============================
+// 🎨 렌더링 (그룹화 + 점 개수 표시 + 수정/삭제 포함)
+// =============================
 function render() {
   cardsContainer.innerHTML = "";
 
-  rawRecords.forEach((r, i) => {
+  // 1. 데이터 그룹화 (제목 + 저자 기준)
+  const grouped = rawRecords.reduce((acc, curr) => {
+    const key = `${curr.title}_${curr.author || "저자 미상"}`;
+    if (!acc[key]) {
+      acc[key] = {
+        title: curr.title,
+        author: curr.author || "저자 미상",
+        sentences: []
+      };
+    }
+    acc[key].sentences.push(curr);
+    return acc;
+  }, {});
+
+  // 2. 그룹화된 데이터를 화면에 출력
+  Object.values(grouped).forEach((group, i) => {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = `${i * 60}ms`;
 
+    // 🔥 숫자를 빼고 문장 개수만큼 점(·) 생성
+    // 1개일 때는 안 나오고, 2개 이상부터 문장 수만큼 점이 생깁니다.
+    const dots = "·".repeat(group.sentences.length);
+    const countBadge = group.sentences.length > 1 
+      ? `<span class="count-dots">${dots}</span>` 
+      : "";
+
     card.innerHTML = `
-      <h3>${r.title}</h3>
-      <p>${r.content}</p>
-      <small>${r.author || "저자 미상"} · ${r.date || ""}</small>
+      <div class="card-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>${group.title} ${countBadge}</h3>
+        </div>
+        <small>${group.author}</small>
+      </div>
+      
+      <div class="sentences">
+        ${group.sentences.map(s => `
+          <div class="sentence-item" onclick="event.stopPropagation(); copyToClipboard(\`${s.content.replace(/`/g, '\\`').replace(/\n/g, '\\n')}\`)">
+            <p>${s.content}</p>
+            <div class="sentence-footer">
+              <small>${s.date}</small>
+              <div class="sentence-actions">
+                <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
+                <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">삭제</button>
+              </div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
     `;
+
+    // 3. 카드 클릭 이벤트: 문장 목록 펼치기/접기
+    card.onclick = () => {
+      const sentencesDiv = card.querySelector(".sentences");
+      const isActive = sentencesDiv.classList.contains("active");
+      
+      if (isActive) {
+        sentencesDiv.classList.remove("active");
+        sentencesDiv.style.display = "none";
+      } else {
+        sentencesDiv.classList.add("active");
+        sentencesDiv.style.display = "flex";
+      }
+    };
 
     cardsContainer.appendChild(card);
   });
@@ -316,4 +413,24 @@ document.querySelector(".save-btn").addEventListener("click", () => {
 
 document.getElementById("themeToggle").onclick = () => {
   document.body.classList.toggle("dark");
+};
+
+// =============================
+// 📋 문장 복사 기능
+// =============================
+window.copyToClipboard = function(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    // 복사 성공 시 토스트 알림 표시
+    const toast = document.createElement("div");
+    toast.className = "copy-toast";
+    toast.innerText = "문장이 복사되었습니다.";
+    document.body.appendChild(toast);
+
+    // 2초 후 토스트 제거
+    setTimeout(() => {
+      toast.remove();
+    }, 2000);
+  }).catch(err => {
+    console.error("복사 실패:", err);
+  });
 };
