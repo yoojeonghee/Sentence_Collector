@@ -415,7 +415,7 @@ const loginThemeBtn = document.getElementById("loginThemeToggle");
 const mainThemeBtn = document.getElementById("themeToggle");
 
 function updateThemeIcons(isLight) {
-  const icon = isLight ? "☀️" : "🌙";
+  const icon = isLight ? "🌙" : "☀️";
   if (loginThemeBtn) loginThemeBtn.innerText = icon;
   if (mainThemeBtn) mainThemeBtn.innerText = icon;
 }

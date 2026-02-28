@@ -482,3 +482,39 @@ body.light .copy-toast{
 #app-screen .today-count.app-today{
   text-align: left;
 }
+
+@media (max-width: 600px) {
+  /* 버튼들을 감싸는 컨테이너 */
+  .hero-top div[style*="display: flex"] {
+    flex-direction: column-reverse; 
+    align-items: flex-end !important;
+    gap: 10px !important;
+  }
+
+  /* 로그아웃 버튼과 테마 버튼 공통 스타일 */
+  #logoutBtn, 
+  .theme-toggle {
+    width: 100px;            /* 🔥 두 버튼의 너비를 동일하게 고정 */
+    height: 40px;            /* 높이도 맞춰주면 더 깔끔합니다 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;     /* 글자 줄바꿈 방지 */
+    font-size: 13px !important;
+    padding: 0 !important;   /* 너비를 고정했으므로 패딩은 0으로 */
+    border-radius: 12px;     /* 버튼의 곡률 통일 */
+  }
+
+  /* 로그아웃 버튼 특화 (순서 조절) */
+  #logoutBtn {
+    order: 2;
+    background: var(--line); /* 라이트모드/다크모드 변수 활용 */
+    color: var(--text-main);
+  }
+
+  /* 테마 토글 버튼 특화 (순서 조절) */
+  .theme-toggle {
+    order: 1;
+    margin: 0;               /* 기본 마진 제거 */
+  }
+}
