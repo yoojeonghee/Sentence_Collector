@@ -18,6 +18,14 @@
   --shadow-soft: 0 8px 24px rgba(0,0,0,0.06);
 }
 
+body {
+  background: #0b0b0d !important;
+}
+
+#login-screen.dark-login {
+  background: #0b0b0d !important;
+}
+
 body.dark{
   --bg: #000000;
   --card: #1c1c1e;
@@ -481,10 +489,8 @@ button:hover{
   width:auto;                /* 100% 제거 */
   min-width:220px;           /* 너무 작아지지 않게 */
   align-self:center;         /* flex 안에서 중앙 정렬 */
-  transition:
-    background .3s var(--ease),
-    box-shadow .3s var(--ease);
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: all .45s cubic-bezier(0.22,1,0.36,1);
 }
 
 #google-login-btn:hover{
@@ -535,4 +541,92 @@ body.dark .count-dots {
   display: flex;
   align-items: center; /* 자식 요소들을 세로 중앙 정렬 */
   line-height: 1;      /* 라인 높이로 인한 밀림 방지 */
+}
+
+/* ========================= */
+/* 🔥 DARK HIP LOGIN DESIGN  */
+/* ========================= */
+
+.dark-login{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0b0b0d;
+  position:relative;
+  overflow:hidden;
+}
+
+/* 로그인 박스는 카드 제거 */
+.dark-login .login-box{
+  background:transparent;
+  box-shadow:none;
+  padding:0;
+  gap:18px;
+  z-index:2;
+}
+
+.login-title{
+  font-size:42px;
+  font-weight:600;
+  letter-spacing:-0.5px;
+  margin:0;
+  color:#fff;
+}
+
+.dark-login .login-sub{
+  color:#aaa;
+  font-size:15px;
+  margin-bottom:40px;
+}
+
+/* 버튼 미니멀화 */
+.dark-login #google-login-btn{
+  background:transparent;
+  border:1px solid #fff;
+  color:#fff;
+  border-radius:40px;
+  padding:14px 36px;
+  transition:all .35s cubic-bezier(0.22,1,0.36,1);
+}
+
+.dark-login #google-login-btn:hover{
+  background:#fff;
+  color:#000;
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(255,255,255,0.15);
+}
+
+.dark-login .login-logo {
+  width: 90px;
+  height: 90px;
+  filter: invert(1) brightness(1.2);
+  opacity: 0.9;
+}
+
+/* 모바일 대응 */
+@media (max-width:600px){
+  .login-title{
+    font-size:32px;
+  }
+  .login-quote{
+    font-size:16px;
+  }
+}
+
+/* 하단 마이크로 카피 */
+.login-micro-copy{
+  position:absolute;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:0.5px;
+  opacity:0.8;
+  transition:opacity .3s ease;
+}
+
+.login-micro-copy:hover{
+  opacity:1;
 }
