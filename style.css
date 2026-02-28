@@ -29,7 +29,7 @@ body.light {
   --text-main: #1c1c1e;
   --text-sub: #6e6e73;
   --line: #ececec;
-  --soft-card: #f2f2f4;
+  --soft-card: #e8e8ea;
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
   --sub: #888;
@@ -264,8 +264,15 @@ input, textarea {
 }
 
 .sentence-item:hover {
-  background: var(--soft-card);
-  transform: translateY(-3px);
+  background: var(--soft-card); 
+  transform: translateY(-4px);
+  transition: all 0.3s var(--ease);
+}
+
+body.light .sentence-item:hover {
+  background: #f8f8f9 !important; 
+  border-color: rgba(0, 0, 0, 0.03); /* 아주 연한 테두리 추가 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); /* 부드러운 그림자 */
 }
 
 /* --- 문장 하단 액션 --- */
@@ -278,6 +285,14 @@ input, textarea {
   border-top: 1px solid var(--line);
   font-size: 11px;
   color: var(--text-sub);
+}
+
+.sentence-item:hover .sentence-footer{
+  border-top: 1px solid #555;
+}
+
+body.light .sentence-item:hover .sentence-footer{
+  border-top: 1px solid #ffffff;
 }
 
 .sentence-actions {
