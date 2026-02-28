@@ -248,11 +248,23 @@ input, textarea {
 
 .sentence-item {
   background: var(--bg);
-  padding: 18px 20px;
+  padding: 20px; 
   border-radius: 18px;
   transition: all 0.3s var(--ease);
   opacity: 0;
   transform: translateY(10px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sentence-item p {
+  margin: 0; 
+  padding: 0;
+  line-height: 1.7;
+  color: var(--text-main);
+  text-align: justify;
 }
 
 .sentences.active .sentence-item {
@@ -280,15 +292,15 @@ body.light .sentence-item:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 14px;
-  padding-top: 12px;
+  padding-top: 16px; 
   border-top: 1px solid var(--line);
   font-size: 11px;
   color: var(--text-sub);
+  margin-top: 0;
 }
 
 .sentence-item:hover .sentence-footer{
-  border-top: 1px solid #555;
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 body.light .sentence-item:hover .sentence-footer{
