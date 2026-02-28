@@ -34,18 +34,33 @@ body.dark{
 .brand{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:16px;
+  cursor:pointer;
 }
 
 .logo{
-  width:46px;
-  height:46px;
-  color:#111;
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  transition: transform .25s var(--ease), opacity .25s var(--ease);
+}
+
+.brand:hover .logo{
+  transform: scale(1.08);
+  opacity:0.8;
 }
 
 .brand-text{
-  font-size:22px;
-  font-weight:600;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  opacity:0.6;
+  transition: opacity .25s var(--ease);
+}
+
+.brand:hover .brand-text{
+  opacity:1;
 }
 
 body.dark .logo{
@@ -405,21 +420,91 @@ button:hover{
 }
 
 #login-screen {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f5f5;
+  background: var(--bg);
+  padding: 24px;
 }
 
 .login-box {
   text-align: center;
+  background: var(--card);
+  padding: 60px 48px;
+  border-radius: 32px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  max-width: 420px;
+  width: 100%;
+  animation: loginFade 0.8s var(--ease);
 }
 
-#google-login-btn {
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
+@keyframes loginFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 로그인 로고 */
+.login-logo{
+  width:96px;
+  height:96px;
+  margin-bottom:10px;
+}
+
+.login-box h1{
+  margin:0;
+  letter-spacing:-0.5px;
+}
+
+.login-sub{
+  margin:4px 0 10px;
+}
+
+/* 로그인 버튼 */
+#google-login-btn{
+  padding:14px 22px;
+  font-size:15px;
+  border-radius:20px;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+  width:auto;                /* 100% 제거 */
+  min-width:220px;           /* 너무 작아지지 않게 */
+  align-self:center;         /* flex 안에서 중앙 정렬 */
+  transition:
+    background .3s var(--ease),
+    box-shadow .3s var(--ease);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+#google-login-btn:hover{
+  background:#000;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+  transform: translateY(-1px);
+}
+
+#google-login-btn:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+body.dark #google-login-btn{
+  background:#f5f5f5;
+  color:#111;
+}
+
+body.dark #google-login-btn:hover{
+  background:#ffffff;
 }
 
 /* 문장 개수 도트 스타일 */
