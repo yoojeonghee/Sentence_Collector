@@ -411,12 +411,26 @@ document.querySelector(".save-btn").addEventListener("click", () => {
   else saveRecord();
 });
 
-document.getElementById("themeToggle").onclick = () => {
+const loginThemeBtn = document.getElementById("loginThemeToggle");
+const mainThemeBtn = document.getElementById("themeToggle");
+
+function updateThemeIcons(isLight) {
+  const icon = isLight ? "☀️" : "🌙";
+  if (loginThemeBtn) loginThemeBtn.innerText = icon;
+  if (mainThemeBtn) mainThemeBtn.innerText = icon;
+}
+
+function handleThemeToggle() {
   document.body.classList.toggle("light");
-  
   const isLight = document.body.classList.contains("light");
-  document.getElementById("themeToggle").innerText = isLight ? "🌙" : "☀️";
-};
+  
+  // 로컬 스토리지 등에 저장하고 싶다면 여기에 추가
+  updateThemeIcons(isLight);
+}
+
+// 클릭 이벤트 연결
+if (loginThemeBtn) loginThemeBtn.onclick = handleThemeToggle;
+if (mainThemeBtn) mainThemeBtn.onclick = handleThemeToggle;
 
 // =============================
 // 📋 문장 복사 기능
