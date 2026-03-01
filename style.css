@@ -25,7 +25,7 @@
    ========================================= */
 body.light {
   --bg: #f5f5f7;
-  --card: #ffffff;
+  --card: #fafafc;
   --text-main: #1c1c1e;
   --text-sub: #6e6e73;
   --line: #ececec;
@@ -41,6 +41,11 @@ body {
   transition: background 0.4s var(--ease), color 0.4s var(--ease);
   background: var(--bg) !important;
   color: var(--text-main);
+}
+
+body.light input,
+body.light textarea {
+  background: #f0f0f2;
 }
 
 /* --- 로그인 화면 --- */
@@ -309,6 +314,10 @@ input, textarea {
   gap: 16px;
 }
 
+body.light .sentence-item {
+  background: #f0f0f2;
+}
+
 .sentence-item p {
   margin: 0; 
   padding: 0;
@@ -332,9 +341,7 @@ input, textarea {
 }
 
 body.light .sentence-item:hover {
-  background: #f8f8f9 !important; 
-  border-color: rgba(0, 0, 0, 0.03); /* 아주 연한 테두리 추가 */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); /* 부드러운 그림자 */
+  background: #f7f7f7 !important;
 }
 
 /* --- 문장 하단 액션 --- */
