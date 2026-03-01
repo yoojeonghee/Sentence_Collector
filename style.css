@@ -98,16 +98,11 @@ body.light .login-title {
   margin-bottom: 10px;
   /* 검은 배경 이미지 -> 흰색 로고로 반전 */
   filter: invert(1) brightness(1.2);
-  mix-blend-mode: screen; 
-  transition: all 0.3s var(--ease);
 }
 
 /* 라이트 모드 전환 시 */
 body.light .login-logo {
-  /* 🔥 중요: invert(0)으로 반전을 완전히 끄고, contrast를 한 줄에 선언 */
-  filter: invert(0) contrast(1.2) brightness(1.0) !important;
-  /* 🔥 중요: 흰색 배경 이미지를 투명하게 날림 */
-  mix-blend-mode: multiply !important;
+  filter: none !important;
 }
 
 body.light .login-title,
