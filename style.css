@@ -45,7 +45,7 @@ body {
 
 body.light input,
 body.light textarea {
-  background: #f0f0f2;
+  background: #f4f4f4;
 }
 
 /* --- 로그인 화면 --- */
@@ -315,7 +315,7 @@ input, textarea {
 }
 
 body.light .sentence-item {
-  background: #f0f0f2;
+  background: #f4f4f4;
 }
 
 .sentence-item p {
