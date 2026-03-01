@@ -289,6 +289,10 @@ async function updateEdited() {
   );
 
   editingId = null;
+
+  const saveBtn = document.querySelector(".save-btn");
+  if (saveBtn) saveBtn.innerText = "저장";
+
   clearInputs();
 }
 
@@ -390,6 +394,11 @@ function clearInputs() {
   document.getElementById("title").value = "";
   document.getElementById("author").value = "";
   document.getElementById("content").value = "";
+
+  editingId = null;
+
+  const saveBtn = document.querySelector(".save-btn");
+  if (saveBtn) saveBtn.innerText = "저장";
 }
 
 document.querySelector(".save-btn").addEventListener("click", () => {
