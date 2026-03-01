@@ -231,6 +231,12 @@ function startRealtimeListener() {
 // =============================
 
 async function saveRecord() {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
+
   const title = document.getElementById("title").value.trim();
   const author = document.getElementById("author").value.trim();
   const content = document.getElementById("content").value.trim();
@@ -240,7 +246,7 @@ async function saveRecord() {
     return;
   }
 
-  await addDoc(collection(db, "users", currentUser.uid, "records"), {
+  await addDoc(collection(db, "users", user.uid, "records"), {
     title,
     author,
     content,
@@ -250,8 +256,6 @@ async function saveRecord() {
 
   clearInputs();
 }
-
-// ... 기존 코드 (saveRecord 함수 등) ...
 
 // =============================
 // 📝 수정 모드 진입 (여기에 추가!)
@@ -271,24 +275,6 @@ window.editSentence = function(id, title, author, content) {
   
   document.getElementById("title").focus();
 };
-
-// =============================
-// ✍ 저장 / 수정 (기존에 있던 위치)
-// =============================
-async function saveRecord() {
-  // ... 기존 코드 ...
-}
-
-async function updateEdited() {
-  // ... 기존 코드 ...
-  
-  // 수정 완료 후 버튼 텍스트 복구 (이 줄을 추가해주면 좋아요)
-  const saveBtn = document.querySelector(".save-btn");
-  if (saveBtn) saveBtn.innerText = "저장";
-  
-  editingId = null;
-  clearInputs();
-}
 
 // ... 나머지 코드 ...
 
