@@ -111,9 +111,12 @@ body.light .login-logo {
 }
 
 body.light .login-title,
-body.light .login-sub,
-body.light .today-count {
+body.light .login-sub{
   color: var(--text-main) !important;
+}
+
+body.light .today-count{
+  color: var(--text-sub) !important;
 }
 
 /* 로그인 화면용 테마 버튼 위치 */
