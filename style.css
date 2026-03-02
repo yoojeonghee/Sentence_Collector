@@ -696,6 +696,7 @@ body.light mark {
   cursor: pointer;
   transition: 0.2s;
   white-space: nowrap;
+  margin-top: -1px;
 }
 
 .add-more-btn:hover {
