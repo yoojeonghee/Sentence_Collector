@@ -239,6 +239,7 @@ async function saveRecord() {
 
   const title = document.getElementById("title").value.trim();
   const author = document.getElementById("author").value.trim();
+  const location = document.getElementById("location").value.trim();
   const content = document.getElementById("content").value.trim();
 
   if (!title || !content) {
@@ -249,6 +250,7 @@ async function saveRecord() {
   await addDoc(collection(db, "users", user.uid, "records"), {
     title,
     author,
+    location,
     content,
     date: new Date().toLocaleDateString(),
     createdAt: new Date()
@@ -260,9 +262,10 @@ async function saveRecord() {
 // =============================
 // 📝 수정 모드 진입 (여기에 추가!)
 // =============================
-window.editSentence = function(id, title, author, content) {
+window.editSentence = function(id, title, author, location, content) {
   document.getElementById("title").value = title;
   document.getElementById("author").value = author;
+  document.getElementById("location").value = location;
   document.getElementById("content").value = content;
 
   editingId = id; // 수정 중인 문서의 ID 저장
@@ -284,6 +287,7 @@ async function updateEdited() {
     {
       title: document.getElementById("title").value.trim(),
       author: document.getElementById("author").value.trim(),
+      location: document.getElementById("location").value.trim(),
       content: document.getElementById("content").value.trim()
     }
   );
@@ -354,12 +358,12 @@ function render() {
       
       <div class="sentences">
         ${group.sentences.map(s => `
-          <div class="sentence-item" onclick="event.stopPropagation(); copyToClipboard(\`${s.content.replace(/`/g, '\\`').replace(/\n/g, '\\n')}\`)">
+          <div class="sentence-item" ...>
             <p>${s.content}</p>
             <div class="sentence-footer">
-              <small>${s.date}</small>
+              <small>${s.location ? s.location + ' | ' : ''}${s.date}</small> 
               <div class="sentence-actions">
-                <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
+                <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', '${(s.location || "").replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
                 <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">삭제</button>
               </div>
             </div>
@@ -393,6 +397,7 @@ function render() {
 function clearInputs() {
   document.getElementById("title").value = "";
   document.getElementById("author").value = "";
+  document.getElementById("location").value = "";
   document.getElementById("content").value = "";
 
   editingId = null;
