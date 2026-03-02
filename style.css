@@ -684,3 +684,33 @@ mark {
 body.light mark {
   color: #f57c00;
 }
+
+/* 문장 추가 버튼 스타일 */
+.add-more-btn {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #888;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.add-more-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #bbb;
+}
+
+/* 라이트 모드일 때 버튼 색상 조정 */
+body.light .add-more-btn {
+  background: #f6f6f6;
+  border-color: #e0e0e0;
+  color: #888;
+}
+
+body.light .add-more-btn:hover {
+  background-color: #e8e8e8;
+  color: #444;
+}

@@ -265,6 +265,30 @@ async function saveRecord() {
 }
 
 // =============================
+// ➕ 기존 책에 문장 추가 기능 (새로 추가할 부분)
+// =============================
+window.addMoreFromBook = function(title, author) {
+  // 1. 입력창에 제목과 저자 정보를 자동으로 넣습니다.
+  document.getElementById("title").value = title;
+  document.getElementById("author").value = author;
+  
+  // 2. 다른 입력 칸(내용, 위치)은 비워줍니다.
+  document.getElementById("content").value = "";
+  document.getElementById("location").value = "";
+  
+  // 3. 화면을 맨 위(입력창)로 부드럽게 올립니다.
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // 4. 바로 내용을 입력할 수 있게 '내용' 입력창에 커서를 둡니다.
+  document.getElementById("content").focus();
+  
+  // 5. 버튼 이름을 '저장'으로 확인 (수정 모드였다면 되돌림)
+  const saveBtn = document.querySelector(".save-btn");
+  if (saveBtn) saveBtn.innerText = "저장";
+  editingId = null;
+};
+
+// =============================
 // 📝 수정 모드 진입 (여기에 추가!)
 // =============================
 window.editSentence = function(id, title, author, location, content) {
@@ -385,15 +409,20 @@ function render() {
 
     card.innerHTML = `
       <div class="card-header">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h3>${highlightText(group.title, searchTerm)} ${countBadge}</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <div>
+            <h3>${highlightText(group.title, searchTerm)} ${countBadge}</h3>
+            <small>${highlightText(group.author, searchTerm)}</small>
+          </div>
+          <button class="add-more-btn" onclick="event.stopPropagation(); addMoreFromBook('${group.title.replace(/'/g, "\\'")}', '${group.author.replace(/'/g, "\\'")}')">
+            ＋ 문장 추가
+          </button>
         </div>
-        <small>${highlightText(group.author, searchTerm)}</small>
       </div>
       
       <div class="sentences">
         ${group.sentences.map(s => `
-          <div class="sentence-item" onclick="...">
+          <div class="sentence-item">
             <p>${highlightText(s.content, searchTerm)}</p>
             <div class="sentence-footer">
               <small>${s.location ? highlightText(s.location, searchTerm) + ' | ' : ''}${s.date}</small> 
