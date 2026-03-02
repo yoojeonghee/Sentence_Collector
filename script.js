@@ -415,7 +415,7 @@ function render() {
             <small>${highlightText(group.author, searchTerm)}</small>
           </div>
           <button class="add-more-btn" onclick="event.stopPropagation(); addMoreFromBook('${group.title.replace(/'/g, "\\'")}', '${group.author.replace(/'/g, "\\'")}')">
-            ＋ 문장 추가
+            ＋
           </button>
         </div>
       </div>
