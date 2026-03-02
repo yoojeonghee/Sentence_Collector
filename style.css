@@ -277,8 +277,7 @@ input, textarea {
   align-items: center;
   justify-content: center;
   line-height: 1; /* 텍스트 행간으로 인한 정렬 뒤틀림 방지 */
-  position: relative;
-  top: -0.3px;
+  margin-top: -1px;
 }
 
 /* 마우스 올렸을 때 */
