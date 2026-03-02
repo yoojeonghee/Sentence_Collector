@@ -37,6 +37,7 @@ let editingId = null;
 let currentUser = null;
 let unsubscribeData = null;
 let unsubscribeCount = null;
+let searchTerm = ""; // 검색어를 저장할 변수
 
 const cardsContainer = document.getElementById("cards");
 const loginScreen = document.getElementById("login-screen");
@@ -323,16 +324,36 @@ window.deleteSentence = async function(firebaseId) {
 };
 
 // =============================
+// ✨ 하이라이트 보조 함수 (추가)
+// =============================
+function highlightText(text, query) {
+  if (!query) return text; // 검색어가 없으면 원본 그대로 반환
+  
+  // 검색어에 특수문자가 섞여있을 경우를 대비해 이스케이프 처리
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(${safeQuery})`, "gi");
+  
+  // 검색어와 일치하는 부분을 <mark> 태그로 감싸서 반환
+  return text.replace(re, "<mark>$1</mark>");
+}
+
+// =============================
 // 🎨 렌더링
-// =============================
-// =============================
-// 🎨 렌더링 (그룹화 + 점 개수 표시 + 수정/삭제 포함)
 // =============================
 function render() {
   cardsContainer.innerHTML = "";
 
+  // ✨ 추가: 검색어에 맞는 데이터만 필터링
+  const filteredRecords = rawRecords.filter(record => {
+    return (
+      record.title.toLowerCase().includes(searchTerm) ||
+      (record.author && record.author.toLowerCase().includes(searchTerm)) ||
+      record.content.toLowerCase().includes(searchTerm)
+    );
+  });
+
   // 1. 데이터 그룹화 (제목 + 저자 기준)
-  const grouped = rawRecords.reduce((acc, curr) => {
+  const grouped = filteredRecords.reduce((acc, curr) => {
     const key = `${curr.title}_${curr.author || "저자 미상"}`;
     if (!acc[key]) {
       acc[key] = {
@@ -361,17 +382,17 @@ function render() {
     card.innerHTML = `
       <div class="card-header">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h3>${group.title} ${countBadge}</h3>
+          <h3>${highlightText(group.title, searchTerm)} ${countBadge}</h3>
         </div>
-        <small>${group.author}</small>
+        <small>${highlightText(group.author, searchTerm)}</small>
       </div>
       
       <div class="sentences">
         ${group.sentences.map(s => `
-          <div class="sentence-item" ...>
-            <p>${s.content}</p>
+          <div class="sentence-item" onclick="...">
+            <p>${highlightText(s.content, searchTerm)}</p>
             <div class="sentence-footer">
-              <small>${s.location ? s.location + ' | ' : ''}${s.date}</small> 
+              <small>${s.location ? highlightText(s.location, searchTerm) + ' | ' : ''}${s.date}</small> 
               <div class="sentence-actions">
                 <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', '${(s.location || "").replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
                 <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">삭제</button>
@@ -398,6 +419,20 @@ function render() {
 
     cardsContainer.appendChild(card);
   });
+
+  // ✨ 검색 결과가 없을 때 안내 메시지 출력
+  if (filteredRecords.length === 0) {
+    const noResult = document.createElement("div");
+    noResult.style.textAlign = "center";
+    noResult.style.padding = "40px 0";
+    noResult.style.color = "#888";
+    noResult.style.fontSize = "0.9rem";
+    noResult.innerHTML = `
+      <div style="font-size: 2rem; margin-bottom: 10px;">🧐</div>
+      찾으시는 문장이 없어요.
+    `;
+    cardsContainer.appendChild(noResult);
+  }
 }
 
 // =============================
@@ -419,6 +454,11 @@ function clearInputs() {
   const saveBtn = document.querySelector(".save-btn");
   if (saveBtn) saveBtn.innerText = "저장";
 }
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  searchTerm = e.target.value.toLowerCase().trim();
+  render(); // 검색어가 바뀔 때마다 다시 그리기
+});
 
 document.querySelector(".save-btn").addEventListener("click", () => {
   if (editingId) updateEdited();
