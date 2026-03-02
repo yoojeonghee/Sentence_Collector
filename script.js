@@ -270,11 +270,11 @@ window.editSentence = function(id, title, author, location, content) {
   // 위치 데이터가 있으면 입력창을 보여주고 값을 넣음
   if (location && location.trim() !== "") {
     locationInput.style.display = "block";
-    locationBtn.innerText = "- 위치 입력 닫기";
+    locationBtn.innerHTML = "<span>✕</span> 위치 입력 닫기";
     locationInput.value = location;
   } else {
     locationInput.style.display = "none";
-    locationBtn.innerText = "+ 위치 추가 (선택)";
+    locationBtn.innerHTML = "<span>+</span> 위치 입력 추가";
     locationInput.value = "";
   }
 
@@ -412,7 +412,7 @@ function clearInputs() {
 
   // 입력창 다시 숨기기
   locationInput.style.display = "none";
-  locationBtn.innerText = "+ 위치 추가 (선택)";
+  locationBtn.innerHTML = "<span>+</span> 위치 입력 추가";
 
   editingId = null;
 
@@ -475,11 +475,11 @@ locationBtn.onclick = () => {
   
   if (isHidden) {
     locationInput.style.display = "block";
-    locationBtn.innerHTML = "<span>✕</span> 위치 닫기"; // 문구 간소화
+    locationBtn.innerHTML = "<span>✕</span> 위치 입력 닫기";
     locationBtn.classList.add("active");
   } else {
     locationInput.style.display = "none";
-    locationBtn.innerHTML = "<span>+</span> 위치 추가"; // 문구 간소화
+    locationBtn.innerHTML = "<span>+</span> 위치 입력 추가";
     locationBtn.classList.remove("active");
     locationInput.value = "";
   }
