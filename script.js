@@ -265,8 +265,18 @@ async function saveRecord() {
 window.editSentence = function(id, title, author, location, content) {
   document.getElementById("title").value = title;
   document.getElementById("author").value = author;
-  document.getElementById("location").value = location;
   document.getElementById("content").value = content;
+
+  // 위치 데이터가 있으면 입력창을 보여주고 값을 넣음
+  if (location && location.trim() !== "") {
+    locationInput.style.display = "block";
+    locationBtn.innerText = "- 위치 입력 닫기";
+    locationInput.value = location;
+  } else {
+    locationInput.style.display = "none";
+    locationBtn.innerText = "+ 위치 추가 (선택)";
+    locationInput.value = "";
+  }
 
   editingId = id; // 수정 중인 문서의 ID 저장
 
@@ -400,6 +410,10 @@ function clearInputs() {
   document.getElementById("location").value = "";
   document.getElementById("content").value = "";
 
+  // 입력창 다시 숨기기
+  locationInput.style.display = "none";
+  locationBtn.innerText = "+ 위치 추가 (선택)";
+
   editingId = null;
 
   const saveBtn = document.querySelector(".save-btn");
@@ -450,4 +464,23 @@ window.copyToClipboard = function(text) {
   }).catch(err => {
     console.error("복사 실패:", err);
   });
+};
+
+// 입력 필드 위치 추가
+const locationBtn = document.getElementById("location-toggle-btn");
+const locationInput = document.getElementById("location");
+
+locationBtn.onclick = () => {
+  const isHidden = locationInput.style.display === "none" || locationInput.style.display === "";
+  
+  if (isHidden) {
+    locationInput.style.display = "block";
+    locationBtn.innerHTML = "<span>✕</span> 위치 닫기"; // 문구 간소화
+    locationBtn.classList.add("active");
+  } else {
+    locationInput.style.display = "none";
+    locationBtn.innerHTML = "<span>+</span> 위치 추가"; // 문구 간소화
+    locationBtn.classList.remove("active");
+    locationInput.value = "";
+  }
 };

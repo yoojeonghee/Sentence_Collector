@@ -254,6 +254,68 @@ input, textarea {
   resize: none;
 }
 
+/* 위치 추가 토글 버튼 스타일 */
+#location-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  
+  /* 크기 및 여백 조절 */
+  padding: 4px 10px;
+  margin: 8px 0 8px 4px; /* 위아래 여백을 동일하게 맞춤 */
+  
+  /* 다크모드에 어울리는 색상 */
+  background-color: rgba(255, 255, 255, 0.05); /* 아주 은은한 배경 */
+  color: #888; /* 텍스트는 연한 회색으로 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  border-radius: 8px; /* 입력창보다는 약간 덜 둥글게 해서 구분감 주기 */
+  font-size: 0.75rem; /* 텍스트 크기를 작게 */
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  width: fit-content; /* 부모 너비를 다 차지하지 않도록 설정 */
+}
+
+#location-toggle-btn span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* 텍스트 행간으로 인한 정렬 뒤틀림 방지 */
+  position: relative;
+  top: -0.3px;
+}
+
+/* 마우스 올렸을 때 */
+#location-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #bbb;
+}
+
+/* 활성화(열려있을 때) 스타일 - 좀 더 선명하게 */
+#location-toggle-btn.active {
+  color: #aaa;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 버튼 라이트 모드 */
+body.light #location-toggle-btn {
+  background-color: #f0f0f0; /* 입력창보다 살짝 진한 회색 배경 */
+  color: #666; /* 조금 더 선명한 회색 텍스트 */
+  border-color: #e0e0e0; /* 테두리 */
+}
+
+body.light #location-toggle-btn:hover {
+  background-color: #e8e8e8;
+  color: #444;
+}
+
+body.light #location-toggle-btn.active {
+  color: #222;
+  background-color: #eee;
+  border-color: #d8d8d8;
+}
+
 /* --- 카드 리스트 --- */
 .cards {
   display: flex;
