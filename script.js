@@ -43,6 +43,10 @@ const cardsContainer = document.getElementById("cards");
 const loginScreen = document.getElementById("login-screen");
 const appScreen = document.getElementById("app-screen");
 
+// 추가: X 버튼 요소를 미리 가져옵니다.
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+
 // =============================
 // 🔢 숫자 애니메이션
 // =============================
@@ -455,10 +459,29 @@ function clearInputs() {
   if (saveBtn) saveBtn.innerText = "저장";
 }
 
-document.getElementById("searchInput").addEventListener("input", (e) => {
+// =============================
+// 🔍 검색창 로직 (수정 및 추가)
+// =============================
+
+// 1. 입력 시: 검색 실행 및 X 버튼 노출 제어
+searchInput.addEventListener("input", (e) => {
   searchTerm = e.target.value.toLowerCase().trim();
-  render(); // 검색어가 바뀔 때마다 다시 그리기
+  
+  // 글자가 있으면 X 버튼 보이기, 없으면 숨기기
+  searchClear.style.display = searchTerm.length > 0 ? "flex" : "none";
+  
+  render(); 
 });
+
+// 2. X 버튼 클릭 시: 검색어 초기화
+searchClear.onclick = () => {
+  searchInput.value = "";
+  searchTerm = "";
+  searchClear.style.display = "none"; // 버튼 숨기기
+  searchInput.focus();               // 다시 입력할 수 있게 포커스
+  render();                          // 전체 목록 다시 그리기
+};
+// =============================
 
 document.querySelector(".save-btn").addEventListener("click", () => {
   if (editingId) updateEdited();

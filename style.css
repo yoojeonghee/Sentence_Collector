@@ -583,24 +583,26 @@ body.light .copy-toast{
   }
 }
 
-/* 검색창 컨테이너 */
+/* 검색창 스타일 */
 .search-container {
   padding: 0 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px; /* 아래 카드와의 간격을 조금 더 확보 */
 }
 
 .search-wrapper {
   display: flex;
   align-items: center;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 12px 16px; /* 세로 정렬이 더 안정적으로 보이게 조정 */
+  border-radius: 14px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .search-icon {
-  margin-right: 10px;
+  margin-right: 12px;
   font-size: 0.9rem;
-  opacity: 0.6;
+  opacity: 0.5;
+  flex-shrink: 0; /* 아이콘이 찌그러지지 않게 고정 */
 }
 
 #searchInput {
@@ -609,43 +611,64 @@ body.light .copy-toast{
   width: 100%;
   outline: none;
   font-size: 0.95rem;
+  padding: 0;
+  margin: 0;
 }
 
-/* =============================
-   🌙 다크 모드 (기본)
-============================= */
+/* ✨ 지우기 버튼 스타일 */
+.search-clear {
+  display: none; /* 기본은 숨김 */
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.search-clear span{
+  margin-top: -2px;
+}
+
+/* 🌙 다크 모드 */
 .search-wrapper {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-#searchInput {
-  color: #fff;
+#searchInput { color: #fff; }
+#searchInput::placeholder { color: #555; }
+.search-clear { 
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: #aaa; 
 }
+.search-clear:hover { background-color: rgba(255, 255, 255, 0.2); color: #fff; }
 
-#searchInput::placeholder {
-  color: #666;
-}
-
-/* =============================
-   ☀️ 라이트 모드 (.light 클래스 기준)
-============================= */
+/* ☀️ 라이트 모드 (.light 클래스) */
 .light .search-wrapper {
-  background-color: #f5f5f5;
-  border: 1px solid #eee;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
 }
-
-.light #searchInput {
-  color: #333;
+.light #searchInput { color: #333; }
+.light #searchInput::placeholder { color: #aaa; }
+.light .search-clear { 
+  background-color: #ddd; 
+  color: #777; 
 }
+.light .search-clear:hover { background-color: #ccc; color: #333; }
 
-.light #searchInput::placeholder {
-  color: #aaa;
-}
-
-/* 포커스 되었을 때 살짝 강조 */
+/* 포커스 효과 */
 .search-wrapper:focus-within {
   border-color: #888;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+.light .search-wrapper:focus-within {
+  border-color: #ccc;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 /* 검색 하이라이트 스타일 */
