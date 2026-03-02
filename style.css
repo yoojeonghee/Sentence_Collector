@@ -259,16 +259,11 @@ input, textarea {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  
-  /* 크기 및 여백 조절 */
   padding: 4px 10px;
-  margin: 8px 0 8px 4px; /* 위아래 여백을 동일하게 맞춤 */
-  
-  /* 다크모드에 어울리는 색상 */
+  margin: 5px 0 5px 4px; /* 위아래 여백을 동일하게 맞춤 */
   background-color: rgba(255, 255, 255, 0.05); /* 아주 은은한 배경 */
   color: #888; /* 텍스트는 연한 회색으로 */
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
   border-radius: 8px; /* 입력창보다는 약간 덜 둥글게 해서 구분감 주기 */
   font-size: 0.75rem; /* 텍스트 크기를 작게 */
   cursor: pointer;
