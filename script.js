@@ -422,7 +422,7 @@ function render() {
       
       <div class="sentences">
         ${group.sentences.map(s => `
-          <div class="sentence-item">
+          <div class="sentence-item" onclick="event.stopPropagation(); copyToClipboard(\`${s.content.replace(/`/g, '\\`')}\`)">
             <p>${highlightText(s.content, searchTerm)}</p>
             <div class="sentence-footer">
               <small>${s.location ? highlightText(s.location, searchTerm) + ' | ' : ''}${s.date}</small> 
