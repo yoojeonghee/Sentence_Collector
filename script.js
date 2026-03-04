@@ -38,6 +38,7 @@ let currentUser = null;
 let unsubscribeData = null;
 let unsubscribeCount = null;
 let searchTerm = ""; // 검색어를 저장할 변수
+let dailySentenceData = null; // 오늘의 문장 변수
 
 const cardsContainer = document.getElementById("cards");
 const loginScreen = document.getElementById("login-screen");
@@ -228,6 +229,8 @@ function startRealtimeListener() {
       rawRecords.push({ firebaseId: docItem.id, ...docItem.data() });
     });
     render();
+    // 오늘의 문장도 함께 로드
+    loadDailySentence();
   });
 }
 
@@ -486,6 +489,97 @@ function clearInputs() {
 
   const saveBtn = document.querySelector(".save-btn");
   if (saveBtn) saveBtn.innerText = "저장";
+}
+
+// =============================
+// 📅 오늘 날짜 문자열 생성
+// =============================
+function getTodayKey() {
+  const today = new Date();
+  return today.getFullYear() + "-" +
+         (today.getMonth() + 1) + "-" +
+         today.getDate();
+}
+
+// =============================
+// 🎲 랜덤 문장 선택
+// =============================
+function pickRandomSentence() {
+  if (!rawRecords.length) return null;
+
+  const randomIndex = Math.floor(Math.random() * rawRecords.length);
+  return rawRecords[randomIndex];
+}
+
+// =============================
+// 🌿 오늘의 문장 로드 (빠져있던 핵심 함수)
+// =============================
+function loadDailySentence(forceNew = false) {
+
+  if (!rawRecords.length) {
+    const textEl = document.getElementById("dailySentenceText");
+    const metaEl = document.getElementById("dailySentenceMeta");
+    const goBtn = document.getElementById("goToInputBtn");
+
+    if (textEl) {
+      textEl.innerText = "오늘의 문장이 아직 비어있어요.\n\n당신의 첫 문장을 기록해보세요.";
+    }
+
+    if (metaEl) metaEl.innerText = "";
+
+    if (goBtn) goBtn.style.display = "inline-block";
+
+    return;
+  }
+
+  const todayKey = getTodayKey();
+  const saved = localStorage.getItem("dailySentence");
+
+  if (saved && !forceNew) {
+    const parsed = JSON.parse(saved);
+
+    // 오늘 날짜면 그대로 유지
+    if (parsed.date === todayKey) {
+      dailySentenceData = parsed.data;
+      renderDailySentence();
+      return;
+    }
+  }
+
+  // 새로 뽑기
+  const randomSentence = pickRandomSentence();
+  dailySentenceData = randomSentence;
+
+  localStorage.setItem("dailySentence", JSON.stringify({
+    date: todayKey,
+    data: randomSentence
+  }));
+
+  renderDailySentence();
+}
+
+// =============================
+// 🖼 오늘의 문장 렌더링
+// =============================
+function renderDailySentence() {
+  if (!dailySentenceData) return;
+
+  const textEl = document.getElementById("dailySentenceText");
+  const metaEl = document.getElementById("dailySentenceMeta");
+
+  textEl.innerText = dailySentenceData.content;
+  metaEl.innerText = `— ${dailySentenceData.title}${dailySentenceData.author ? " | " + dailySentenceData.author : ""}`;
+}
+
+// =============================
+// 🔁 오늘의 문장 다시 뽑기
+// =============================
+const refreshDailyBtn = document.getElementById("refreshDailyBtn");
+
+if (refreshDailyBtn) {
+  refreshDailyBtn.addEventListener("click", () => {
+    loadDailySentence(true); // 강제 새로 뽑기
+  });
 }
 
 // =============================
