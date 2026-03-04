@@ -741,10 +741,10 @@ body:not(.light) .daily-sentence-card {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-body:not(.light) #refreshDailyBtn {
+/* body:not(.light) #refreshDailyBtn {
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
-}
+} */
 
 /* 라이트모드 */
 body.light .daily-sentence-card {
@@ -753,10 +753,10 @@ body.light .daily-sentence-card {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
 }
 
-body.light #refreshDailyBtn {
+/* body.light #refreshDailyBtn {
   background: #ebebed;
   color: #555;
-}
+} */
 
 .daily-header {
   display: flex;
@@ -768,17 +768,7 @@ body.light #refreshDailyBtn {
   font-size: 16px;
   font-weight: 700;
   opacity: 0.8;
-}
-
-#refreshDailyBtn {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.08);
-  font-size: 12px;
-  padding: 6px 12px;
-}
-
-#refreshDailyBtn:hover {
-  opacity: 0.85;
+  letter-spacing: 0.5px;
 }
 
 .daily-content {
@@ -811,4 +801,62 @@ body.light #refreshDailyBtn {
 
 .daily-content small {
   display: block;
+}
+/* 오늘의 문장 버튼 기본 스타일 */
+.refreshDailyBtn {
+  position: relative;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+}
+
+/* hover 시 부드러운 강조 */
+.refreshDailyBtn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* 클릭 시 살짝 눌리는 느낌 */
+.refreshDailyBtn:active {
+  transform: translateY(1px);
+}
+
+/* 툴팁 */
+.tooltip {
+  position: absolute;
+  right: 130%; /* 아이콘 왼쪽으로 이동 */
+  top: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* hover 시 등장 */
+.refreshDailyBtn:hover .tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* 말풍선 꼭지 */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  right: -11px;
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.7);
 }

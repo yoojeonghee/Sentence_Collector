@@ -55,9 +55,13 @@
       <div class="daily-sentence-card">
         <div class="daily-header">
           <h2>오늘의 문장</h2>
-          <button id="refreshDailyBtn">다른 문장 보기</button>
+          <!-- <button id="refreshDailyBtn">📄</button> -->
+          <!-- change-sentence-btn -->
+          <button class="refreshDailyBtn" onclick="handleChangeSentence()">
+            📄
+            <span class="tooltip">다른 문장 보기</span>
+          </button>
         </div>
-
         <div class="daily-content">
           <p id="dailySentenceText">문장을 불러오는 중...</p>
           <small id="dailySentenceMeta"></small>

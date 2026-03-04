@@ -39,6 +39,7 @@ let unsubscribeData = null;
 let unsubscribeCount = null;
 let searchTerm = ""; // 검색어를 저장할 변수
 let dailySentenceData = null; // 오늘의 문장 변수
+let currentDailySentence = null;
 
 const cardsContainer = document.getElementById("cards");
 const loginScreen = document.getElementById("login-screen");
@@ -504,15 +505,35 @@ function getTodayKey() {
 // =============================
 // 🎲 랜덤 문장 선택
 // =============================
-function pickRandomSentence() {
+function pickRandomSentence(forceNew = false) {
+
   if (!rawRecords.length) return null;
 
-  const randomIndex = Math.floor(Math.random() * rawRecords.length);
-  return rawRecords[randomIndex];
+  let candidateRecords = rawRecords;
+
+  // 📄 버튼 눌렀을 때는 현재 문장 제외
+  if (forceNew && currentDailySentence) {
+
+    candidateRecords = rawRecords.filter(record => 
+      record.content !== currentDailySentence.content
+    );
+
+    // 문장이 1개뿐이면 그냥 그대로 사용
+    if (candidateRecords.length === 0) {
+      candidateRecords = rawRecords;
+    }
+  }
+
+  const randomIndex = Math.floor(Math.random() * candidateRecords.length);
+  const selected = candidateRecords[randomIndex];
+
+  currentDailySentence = selected;
+
+  return selected;  // 🔥 이거 꼭 필요함
 }
 
 // =============================
-// 🌿 오늘의 문장 로드 (빠져있던 핵심 함수)
+// 🌿 오늘의 문장 로드
 // =============================
 function loadDailySentence(forceNew = false) {
 
@@ -541,13 +562,14 @@ function loadDailySentence(forceNew = false) {
     // 오늘 날짜면 그대로 유지
     if (parsed.date === todayKey) {
       dailySentenceData = parsed.data;
+      currentDailySentence = parsed.data;
       renderDailySentence();
       return;
     }
   }
 
   // 새로 뽑기
-  const randomSentence = pickRandomSentence();
+  const randomSentence = pickRandomSentence(forceNew);
   dailySentenceData = randomSentence;
 
   localStorage.setItem("dailySentence", JSON.stringify({
@@ -557,6 +579,19 @@ function loadDailySentence(forceNew = false) {
 
   renderDailySentence();
 }
+
+// =============================
+// 🔁 오늘의 문장 버튼 클릭 함수
+// =============================
+window.handleChangeSentence = function() {
+
+  // 문장이 하나도 없으면 아무것도 하지 않음
+  if (!rawRecords.length) return;
+
+  // 강제로 새 문장 뽑기
+  loadDailySentence(true);
+
+};
 
 // =============================
 // 🖼 오늘의 문장 렌더링
@@ -569,17 +604,6 @@ function renderDailySentence() {
 
   textEl.innerText = dailySentenceData.content;
   metaEl.innerText = `— ${dailySentenceData.title}${dailySentenceData.author ? " | " + dailySentenceData.author : ""}`;
-}
-
-// =============================
-// 🔁 오늘의 문장 다시 뽑기
-// =============================
-const refreshDailyBtn = document.getElementById("refreshDailyBtn");
-
-if (refreshDailyBtn) {
-  refreshDailyBtn.addEventListener("click", () => {
-    loadDailySentence(true); // 강제 새로 뽑기
-  });
 }
 
 // =============================
