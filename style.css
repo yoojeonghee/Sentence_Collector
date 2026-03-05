@@ -802,6 +802,7 @@ body.light .daily-sentence-card {
 .daily-content small {
   display: block;
 }
+
 /* 오늘의 문장 버튼 기본 스타일 */
 .refreshDailyBtn {
   position: relative;
@@ -809,10 +810,11 @@ body.light .daily-sentence-card {
   border: none;
   font-size: 22px;
   cursor: pointer;
-  padding: 6px;
+  padding: 0px;
   border-radius: 8px;
   transition: all 0.2s ease;
-  opacity: 0.8;
+  opacity: 0.9;
+  margin: 0;
 }
 
 /* hover 시 부드러운 강조 */
@@ -829,7 +831,7 @@ body.light .daily-sentence-card {
 /* 툴팁 */
 .tooltip {
   position: absolute;
-  right: 130%; /* 아이콘 왼쪽으로 이동 */
+  right: 135%; /* 아이콘 왼쪽으로 이동 */
   top: 50%;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -841,6 +843,10 @@ body.light .daily-sentence-card {
   pointer-events: none;
   transition: all 0.2s ease;
   transform: translateY(-50%) scale(0.95);
+}
+
+body.light .tooltip{
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* hover 시 등장 */
@@ -859,4 +865,8 @@ body.light .daily-sentence-card {
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent transparent rgba(255, 255, 255, 0.7);
+}
+
+body.light .tooltip::after {
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.5);
 }
