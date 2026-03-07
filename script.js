@@ -38,8 +38,10 @@ let currentUser = null;
 let unsubscribeData = null;
 let unsubscribeCount = null;
 let searchTerm = ""; // 검색어를 저장할 변수
+let isFavoriteFilterActive = false;
 let dailySentenceData = null; // 오늘의 문장 변수
 let currentDailySentence = null;
+let expandedCardKeys = new Set(); // ⭐ 열려 있는 카드의 키(제목+저자)를 저장할 세트 추가
 
 const cardsContainer = document.getElementById("cards");
 const loginScreen = document.getElementById("login-screen");
@@ -356,6 +358,24 @@ window.deleteSentence = async function(firebaseId) {
 };
 
 // =============================
+// ⭐ 즐겨찾기 토글 (Firestore 업데이트)
+// =============================
+window.toggleFavorite = async function(firebaseId, currentStatus) {
+  const newStatus = !currentStatus;
+  
+  await updateDoc(doc(db, "users", currentUser.uid, "records", firebaseId), {
+    isFavorite: newStatus
+  });
+
+  // 토스트 알림 (기존 copy-toast 스타일 재활용)
+  const toast = document.createElement("div");
+  toast.className = "copy-toast";
+  toast.innerText = newStatus ? "⭐ 나의 문장집에 추가되었습니다." : "즐겨찾기 해제";
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+};
+
+// =============================
 // ✨ 하이라이트 보조 함수 (추가)
 // =============================
 function highlightText(text, query) {
@@ -377,11 +397,15 @@ function render() {
 
   // ✨ 추가: 검색어에 맞는 데이터만 필터링
   const filteredRecords = rawRecords.filter(record => {
-    return (
+    const matchesSearch = 
       record.title.toLowerCase().includes(searchTerm) ||
       (record.author && record.author.toLowerCase().includes(searchTerm)) ||
-      record.content.toLowerCase().includes(searchTerm)
-    );
+      record.content.toLowerCase().includes(searchTerm);
+    
+    // 즐겨찾기 필터가 켜져 있으면 isFavorite이 true인 것만 보여줌
+    const matchesFavorite = isFavoriteFilterActive ? record.isFavorite === true : true;
+
+    return matchesSearch && matchesFavorite;
   });
 
   // 1. 데이터 그룹화 (제목 + 저자 기준)
@@ -399,17 +423,17 @@ function render() {
   }, {});
 
   // 2. 그룹화된 데이터를 화면에 출력
+  // [render() 함수 내부 Object.values(grouped).forEach 루프 안쪽 수정]
   Object.values(grouped).forEach((group, i) => {
+    const key = `${group.title}_${group.author}`; // 카드 고유 키
+    const isExpanded = expandedCardKeys.has(key); // ⭐ 이 카드가 열려 있었는지 확인
+
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = `${i * 60}ms`;
 
-    // 🔥 숫자를 빼고 문장 개수만큼 점(·) 생성
-    // 1개일 때는 안 나오고, 2개 이상부터 문장 수만큼 점이 생깁니다.
     const dots = "·".repeat(group.sentences.length);
-    const countBadge = group.sentences.length > 1 
-      ? `<span class="count-dots">${dots}</span>` 
-      : "";
+    const countBadge = group.sentences.length > 1 ? `<span class="count-dots">${dots}</span>` : "";
 
     card.innerHTML = `
       <div class="card-header">
@@ -424,23 +448,23 @@ function render() {
         </div>
       </div>
       
-      <div class="sentences">
+      <div class="sentences ${isExpanded ? 'active' : ''}" style="display: ${isExpanded ? 'flex' : 'none'};">
         ${group.sentences.map(s => `
           <div class="sentence-item" onclick="event.stopPropagation(); copyToClipboard(\`${s.content.replace(/`/g, '\\`')}\`)">
-            <p>${highlightText(s.content, searchTerm)}</p>
-            <div class="sentence-footer">
-              <small>${s.location ? highlightText(s.location, searchTerm) + ' | ' : ''}${s.date}</small> 
-              <div class="sentence-actions">
-                <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', '${(s.location || "").replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
-                <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">삭제</button>
-              </div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+              <p style="flex:1;">${highlightText(s.content, searchTerm)}</p>
+              <span class="favorite-star" 
+                    style="cursor:pointer; font-size:1.2rem; color:${s.isFavorite ? '#FFD700' : '#ccc'};"
+                    onclick="event.stopPropagation(); toggleFavorite('${s.firebaseId}', ${s.isFavorite || false})">
+                ${s.isFavorite ? '★' : '☆'}
+              </span>
             </div>
-          </div>
+            </div>
         `).join("")}
       </div>
     `;
 
-    // 3. 카드 클릭 이벤트: 문장 목록 펼치기/접기
+    // 3. 카드 클릭 이벤트 수정
     card.onclick = () => {
       const sentencesDiv = card.querySelector(".sentences");
       const isActive = sentencesDiv.classList.contains("active");
@@ -448,9 +472,11 @@ function render() {
       if (isActive) {
         sentencesDiv.classList.remove("active");
         sentencesDiv.style.display = "none";
+        expandedCardKeys.delete(key); // ⭐ 닫으면 세트에서 제거
       } else {
         sentencesDiv.classList.add("active");
         sentencesDiv.style.display = "flex";
+        expandedCardKeys.add(key); // ⭐ 열면 세트에 추가
       }
     };
 
@@ -693,4 +719,24 @@ locationBtn.onclick = () => {
     locationBtn.classList.remove("active");
     locationInput.value = "";
   }
+};
+
+// =============================
+// 📚 즐겨찾기 필터 버튼 로직
+// =============================
+const favoriteFilterBtn = document.getElementById("favoriteFilterBtn");
+
+favoriteFilterBtn.onclick = () => {
+  isFavoriteFilterActive = !isFavoriteFilterActive;
+  
+  // 버튼 활성화 시 시각적 변화 (옵션)
+  if (isFavoriteFilterActive) {
+    favoriteFilterBtn.style.background = "#fff9c4"; // 노란색 배경
+    favoriteFilterBtn.innerText = "⭐";
+  } else {
+    favoriteFilterBtn.style.background = ""; 
+    favoriteFilterBtn.innerText = "📚";
+  }
+  
+  render(); // 리스트 새로고침
 };
