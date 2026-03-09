@@ -883,9 +883,9 @@ body.light .tooltip::after {
   background: var(--card) !important; /* 카드 배경색과 통일 */
   border: 1px solid var(--line) !important;
   color: var(--text-sub);
-  width: 48px; /* 정사각형 형태 유지 */
-  height: 48px;
-  border-radius: 14px;
+  width: 44px; /* 정사각형 형태 유지 */
+  height: 44px;
+  border-radius: 12px;
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -908,6 +908,35 @@ body.light .tooltip::after {
 .favorite-filter-btn:hover {
   border-color: var(--text-sub) !important;
   color: var(--text-main);
+}
+
+/* 문장 박스 내부 별 위치 조정 */
+.favorite-star {
+  margin-top: -3px; /* 텍스트 첫 줄 높이에 맞춰 미세 조정 */
+  flex-shrink: 0; /* 별 모양이 찌그러지지 않게 고정 */
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05); /* 은은한 원형 배경 */
+  color: #555; /* 어두운 회색으로 미비하게 표시 */
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+/* 라이트 모드에서의 비어있는 상태 */
+body.light .favorite-star {
+  background: rgba(0, 0, 0, 0.05);
+  color: #ccc;
+}
+
+/* 활성화(즐겨찾기 됨) 상태 */
+.favorite-star.active {
+  background: rgba(255, 215, 0, 0.15); /* 노란색 배경 살짝 */
+  color: #FFD700; /* 황금색 별 */
+  transform: scale(1.1);
 }
 
 /* 라이트 모드 미세 조정 */

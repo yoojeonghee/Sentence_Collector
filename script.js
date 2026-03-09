@@ -463,7 +463,7 @@ function render() {
             <div class="sentence-footer">
               <div class="sentence-meta">
                 <span>${s.date || ''}</span>
-                ${s.location ? `<span style="margin-left:8px; opacity:0.8;">| ${highlightText(s.location, searchTerm)}</span>` : ''}
+                ${s.location ? `<span style="margin-left:0px; opacity:0.8;">| ${highlightText(s.location, searchTerm)}</span>` : ''}
               </div>
               <div class="sentence-actions">
                 <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', '${(s.location || "").replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
@@ -754,7 +754,7 @@ favoriteFilterBtn.onclick = () => {
     favoriteFilterBtn.innerText = "⭐";
   } else {
     favoriteFilterBtn.style.background = ""; 
-    favoriteFilterBtn.innerText = "📚";
+    favoriteFilterBtn.innerText = "⭐";
   }
   
   render(); // 리스트 새로고침
