@@ -459,7 +459,18 @@ function render() {
                 ${s.isFavorite ? '★' : '☆'}
               </span>
             </div>
+
+            <div class="sentence-footer">
+              <div class="sentence-meta">
+                <span>${s.date || ''}</span>
+                ${s.location ? `<span style="margin-left:8px; opacity:0.8;">| ${highlightText(s.location, searchTerm)}</span>` : ''}
+              </div>
+              <div class="sentence-actions">
+                <button onclick="event.stopPropagation(); editSentence('${s.firebaseId}', '${s.title.replace(/'/g, "\\'")}', '${s.author.replace(/'/g, "\\'")}', '${(s.location || "").replace(/'/g, "\\'")}', \`${s.content.replace(/`/g, '\\`')}\`)">수정</button>
+                <button onclick="event.stopPropagation(); deleteSentence('${s.firebaseId}')">삭제</button>
+              </div>
             </div>
+          </div>
         `).join("")}
       </div>
     `;
@@ -636,24 +647,32 @@ function renderDailySentence() {
 // 🔍 검색창 로직 (수정 및 추가)
 // =============================
 
+// 초기 로드 시 X 버튼 숨기기 (안전장치)
+if (searchClear) searchClear.style.display = "none";
+
 // 1. 입력 시: 검색 실행 및 X 버튼 노출 제어
 searchInput.addEventListener("input", (e) => {
   searchTerm = e.target.value.toLowerCase().trim();
   
-  // 글자가 있으면 X 버튼 보이기, 없으면 숨기기
-  searchClear.style.display = searchTerm.length > 0 ? "flex" : "none";
+  // 🔥 수정: 글자가 있으면 보여주고, 없으면 완전히 숨김
+  if (searchTerm.length > 0) {
+    searchClear.style.display = "flex";
+  } else {
+    searchClear.style.display = "none";
+  }
   
   render(); 
 });
 
-// 2. X 버튼 클릭 시: 검색어 초기화
-searchClear.onclick = () => {
+// 2. X 버튼 클릭 시: 검색어 초기화 및 버튼 숨기기
+searchClear.addEventListener("click", () => {
   searchInput.value = "";
   searchTerm = "";
   searchClear.style.display = "none"; // 버튼 숨기기
   searchInput.focus();               // 다시 입력할 수 있게 포커스
-  render();                          // 전체 목록 다시 그리기
-};
+  render();                          // 전체 목록 다시 그리기 (검색 해제)
+});
+
 // =============================
 
 document.querySelector(".save-btn").addEventListener("click", () => {
